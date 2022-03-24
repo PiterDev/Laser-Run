@@ -14,7 +14,7 @@ func _ready() -> void:
 	$MoveTimer.start()
 	
 	
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if not moving:
 		return
 	if $Visibility.is_on_screen():
@@ -29,6 +29,7 @@ func _physics_process(delta: float) -> void:
 			speeding = true
 	
 	
+# warning-ignore:return_value_discarded
 	move_and_slide(Vector2.RIGHT * speed)
 	
 
@@ -64,8 +65,6 @@ func _on_Area2D_body_entered(body: Node) -> void:
 	if not body.is_in_group("Player"):
 		return
 	emit_signal("lose")
+# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://Scenes/Lose.tscn")
 
-
-func _on_SpeedTween_tween_completed(object: Object, key: NodePath) -> void:
-	print(object)

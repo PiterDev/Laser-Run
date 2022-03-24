@@ -34,7 +34,7 @@ func add_random_map(x_pos):
 		new_instance.connect("exited", self, "_map_removed")
 		add_child(new_instance)
 		
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	
 	var current_cell : =  world_to_map(player_pos)
 	if int(current_cell.x) % 500 == 0:
@@ -73,6 +73,7 @@ func generate_map() -> void:
 			var rand := floor(openSimplexNoise.get_noise_2d(x,y))
 			if get_cell(x, y-1) == 0:
 				rand = 0
+# warning-ignore:narrowing_conversion
 			set_cell(x,y, rand)
 		
 		
@@ -84,6 +85,7 @@ func generate_map() -> void:
 #			elif get_cell(x, y2+1) == -1:
 #				rand = -1
 
+# warning-ignore:narrowing_conversion
 			set_cell(x,y2, rand)
 	fill_ceil()
 	fill_floor()
