@@ -81,9 +81,13 @@ func _shoot() -> void:
 			
 		else:
 			$Laser.points[1] = get_local_mouse_position() * 100
-		$Particles2D.emitting = true
-		$Particles2D.rotation = $Particles2D.get_angle_to($Laser.points[1])
 		$Particles2D.position = $Laser.points[1]
+		#$Particles2D.rotation = $Laser.get_angle_to($Laser.points[1])
+		var dir_to: Vector2 = $Laser.points[0].direction_to($Laser.points[1]) * 100
+		$Particles2D.process_material.gravity = Vector3(dir_to[0], dir_to[1], 0)
+		$Particles2D.emitting = true
+		
+		
 		
 #		$Laser.points[1] = $Preview.points
 		$Laser.visible = true

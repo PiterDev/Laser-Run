@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scripts/PlayerConnect.gd" type="Script" id=2]
 [ext_resource path="res://Scripts/LaserLeft.gd" type="Script" id=3]
 [ext_resource path="res://Scenes/Wall.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scripts/MapPlace.gd" type="Script" id=5]
@@ -98,7 +99,6 @@ position = Vector2( -138, 3 )
 z_index = 4
 
 [node name="Node2D" type="Node2D" parent="Wall"]
-visible = false
 z_index = -5
 
 [node name="Rect" type="ColorRect" parent="Wall/Node2D"]
@@ -120,6 +120,9 @@ environment = SubResource( 6 )
 
 [node name="WorldGen" parent="." instance=ExtResource( 9 )]
 tile_data = PoolIntArray( -196612, 0, 0 )
+
+[node name="PlayerConnect" type="Node" parent="WorldGen"]
+script = ExtResource( 2 )
 
 [connection signal="on_ammo_used" from="Player" to="UILayer/LaserLeft" method="_on_Player_on_ammo_used"]
 [connection signal="timeout" from="ScoreTimer" to="ScoreTimer" method="_on_ScoreTimer_timeout"]
