@@ -14,7 +14,7 @@
 offsets = PoolRealArray( 0.0236686, 0.47929, 1 )
 colors = PoolColorArray( 0.00817323, 0.00456238, 0.0507813, 1, 0.179688, 0.317261, 0.359375, 1, 0.804688, 0.804688, 0.804688, 1 )
 
-[sub_resource type="GradientTexture" id=4]
+[sub_resource type="GradientTexture" id=7]
 gradient = SubResource( 5 )
 
 [sub_resource type="Environment" id=6]
@@ -39,7 +39,7 @@ adjustment_enabled = true
 adjustment_brightness = 1.01
 adjustment_contrast = 1.2
 adjustment_saturation = 1.5
-adjustment_color_correction = SubResource( 4 )
+adjustment_color_correction = SubResource( 7 )
 
 [node name="Map" type="Node2D"]
 

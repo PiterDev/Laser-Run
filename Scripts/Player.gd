@@ -1,20 +1,20 @@
 # Movement from https://kidscancode.org/godot_recipes/2d/platform_character/
 extends KinematicBody2D
 
-export var speed := 100
-export var jump_speed := 120
-export var gravity := 150 # 300
+export var speed := 200
+export var jump_speed := 200
+export var gravity := 300 # 300
 
 export var laser_boost_speed := 7
 export var laser_start_boost_speed := 12
 
-export var laser_max_ammo := 20
+export var laser_max_ammo := 50
 export var laser_ammo: float = laser_max_ammo setget ammo_changed, get_ammo
 export var laser_start_use := 2
 
 
 
-var velocity := Vector2.ZERO
+export var velocity := Vector2.ZERO
 var last_mouse_pos := Vector2.ZERO
 var is_shooting := false
 var shoot_stopped := false
@@ -92,6 +92,7 @@ func _shoot() -> void:
 #		$Laser.points[1] = $Preview.points
 		$Laser.visible = true
 		var direction_to_mouse = global_position.direction_to(get_global_mouse_position()) * -1
+		direction_to_mouse.x *= 2 # x movement too slow ):
 		velocity += direction_to_mouse * laser_boost_speed
 
 
@@ -133,17 +134,28 @@ func shoot_process() -> void:
 	if is_shooting:
 		_shoot()
 
-
+var friction = 0.1
+var acceleration = 0.5
 func get_input() -> void:
 	# Movement (:
-	
-	velocity.x = 0
+#	velocity.x = 0
+#	if Input.is_action_pressed("move_right"):
+#		velocity.x += speed
+#	if Input.is_action_pressed("move_left"):
+#	if Input.is_action_pressed("move_left"):
+#		velocity.x -= speed
+#	last_mouse_pos = get_global_mouse_position()
+	var input_dir = 0
 	if Input.is_action_pressed("move_right"):
-		velocity.x += speed
+		input_dir += 1
 	if Input.is_action_pressed("move_left"):
-		velocity.x -= speed
-	last_mouse_pos = get_global_mouse_position()
-		
+		input_dir -= 1
+	if input_dir != 0:
+		# accelerate when there's input
+		velocity.x = lerp(velocity.x, input_dir * speed, acceleration)
+	else:
+		# slow down when there's no input
+		velocity.x = lerp(velocity.x, 0, friction)
 		
 #func handle_bounce() -> void:
 #	if get_slide_count() == 0:
@@ -155,7 +167,7 @@ var buffer_frames_left := 0
 func handle_jump() -> void:
 	
 	if is_on_floor():
-		buffer_frames_left = 60
+		buffer_frames_left = 5
 	elif buffer_frames_left > 0:
 		buffer_frames_left -= 1
 	
@@ -171,7 +183,19 @@ func _physics_process(delta: float) -> void:
 	shoot_process()
 	handle_jump()
 #	handle_bounce()
+
+
+
+#	velocity.y += gravity * delta
+	
 	velocity.y += gravity * delta
+	
+	
+#	if velocity.x > 0:
+#		velocity.x -= 150.0 * delta
+#	elif velocity.x < 0:
+#		velocity.x += 150.0 * delta
+	
 	velocity = move_and_slide(velocity, Vector2.UP)
 	
 

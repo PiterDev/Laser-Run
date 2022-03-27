@@ -85,19 +85,10 @@ default_color = Color( 0.4, 0.501961, 1, 1 )
 gradient = SubResource( 7 )
 script = ExtResource( 2 )
 
-[node name="PreviewRaycast" type="RayCast2D" parent="."]
-position = Vector2( 3, 5 )
-enabled = true
-cast_to = Vector2( 0, 100 )
-
 [node name="Camera2D" type="Camera2D" parent="."]
 visible = false
 current = true
 smoothing_enabled = true
-
-[node name="LaserRayCast" type="RayCast2D" parent="."]
-enabled = true
-cast_to = Vector2( 0, 100 )
 
 [node name="Particles2D" type="Particles2D" parent="."]
 position = Vector2( 3, 5 )
@@ -118,5 +109,15 @@ one_shot = true
 [node name="ReloadTween" type="Tween" parent="Tweens"]
 
 [node name="ShootTween" type="Tween" parent="Tweens"]
+
+[node name="LaserRayCast" type="RayCast2D" parent="."]
+position = Vector2( 3, 5 )
+enabled = true
+cast_to = Vector2( 0, 100 )
+
+[node name="PreviewRaycast" type="RayCast2D" parent="."]
+position = Vector2( 3, 5 )
+enabled = true
+cast_to = Vector2( 0, 100 )
 
 [connection signal="timeout" from="Timers/ReloadTimer" to="." method="_on_ReloadTimer_timeout"]

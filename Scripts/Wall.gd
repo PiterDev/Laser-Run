@@ -66,5 +66,7 @@ func _on_Area2D_body_entered(body: Node) -> void:
 		return
 	emit_signal("lose")
 # warning-ignore:return_value_discarded
+	Game.write_json_file(Game.score_path, Game.scores)
+	print("Writing data...")
 	get_tree().change_scene("res://Scenes/Lose.tscn")
 

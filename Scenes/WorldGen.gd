@@ -8,7 +8,7 @@ export var max_height := 14
 var openSimplexNoise := OpenSimplexNoise.new()
 
 export var floorgen_y_min := 10
-export var floorgen_y_max := 13
+export var floorgen_y_max := 18
 
 export var ceilgen_y_min := -8
 export var ceilgen_y_max := -5
