@@ -31,7 +31,6 @@ func add_random_map(x_pos):
 		var chosen_scene = random_rooms[rand_range(0, len(random_rooms)-1)]
 		var new_instance = chosen_scene.instance()
 		new_instance.position = (Vector2(x_pos,-16*3))
-		new_instance.connect("exited", self, "_map_removed")
 		add_child(new_instance)
 		
 func _process(_delta: float) -> void:

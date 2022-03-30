@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Line2D.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/JumpCast.gd" type="Script" id=3]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 3.0
@@ -119,5 +120,13 @@ cast_to = Vector2( 0, 100 )
 position = Vector2( 3, 5 )
 enabled = true
 cast_to = Vector2( 0, 100 )
+
+[node name="Raycasts" type="Node2D" parent="."]
+
+[node name="JumpCast" type="RayCast2D" parent="Raycasts"]
+position = Vector2( 3, 10 )
+enabled = true
+cast_to = Vector2( 0, 3 )
+script = ExtResource( 3 )
 
 [connection signal="timeout" from="Timers/ReloadTimer" to="." method="_on_ReloadTimer_timeout"]

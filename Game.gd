@@ -2,6 +2,15 @@ extends Node
 
 var score := 0
 var high_score := 0 setget change_high_score
+var player setget set_player
+var player_ready := false
+
+
+func set_player(new_player):
+	player = new_player
+	player_ready = true
+
+
 
 const score_path := "user://laser_run_scores.json"
 var scores := {}
@@ -12,11 +21,19 @@ func _ready() -> void:
 	high_score = scores["high_score"]
 	print(scores["high_score"])
 
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_WM_FOCUS_OUT:
+			get_tree().paused = true
+		NOTIFICATION_WM_FOCUS_IN:
+			get_tree().paused = false
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("fullscreen"):
 		OS.window_fullscreen = !OS.window_fullscreen
-		
+#	if event.is_action_pressed("pause"):
+#		get_tree().paused = not get_tree().paused
+#
 func read_json_file(file_path):
 	var file = File.new()
 	file.open(file_path, File.READ)

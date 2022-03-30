@@ -1,0 +1,105 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Scripts/Debug Menu.gd" type="Script" id=1]
+[ext_resource path="res://Resources/Fonts/PublicPixel-0W5Kv.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Scripts/DebugLabel.gd" type="Script" id=3]
+[ext_resource path="res://Resources/Fonts/prstart.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://Resources/Theme.tres" type="Theme" id=5]
+
+[sub_resource type="DynamicFont" id=2]
+size = 8
+font_data = ExtResource( 2 )
+
+[sub_resource type="Theme" id=3]
+default_font = SubResource( 2 )
+Label/fonts/font = null
+
+[sub_resource type="DynamicFont" id=1]
+size = 4
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 6
+font_data = ExtResource( 4 )
+
+[node name="Debug Menu" type="Control"]
+anchor_bottom = 1.0
+margin_right = 124.0
+mouse_filter = 2
+theme = SubResource( 3 )
+script = ExtResource( 1 )
+__meta__ = {
+"_editor_description_": "Debugging for epic gaming"
+}
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -30.0
+margin_right = 30.0
+margin_bottom = 14.0
+custom_fonts/font = SubResource( 1 )
+text = "Running Debug"
+
+[node name="DebugLabel" type="Label" parent="."]
+anchor_top = 0.065
+anchor_bottom = 0.065
+margin_top = -0.0400009
+margin_right = 128.0
+margin_bottom = 36.96
+theme = ExtResource( 5 )
+custom_fonts/font = SubResource( 4 )
+text = "FPS: amogus
+
+Velocity: adsasdasdas
+Ammo: 123"
+script = ExtResource( 3 )
+
+[node name="SpeedEdit" type="LineEdit" parent="."]
+anchor_left = 0.5
+anchor_top = 0.231
+anchor_right = 0.5
+anchor_bottom = 0.231
+margin_left = -54.0
+margin_top = 20.104
+margin_right = 52.0
+margin_bottom = 38.104
+text = "200"
+
+[node name="Label" type="Label" parent="SpeedEdit"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -20.0
+margin_top = -10.0
+margin_right = 20.0
+margin_bottom = -2.0
+text = "Speed"
+align = 1
+valign = 1
+
+[node name="JumpSpeedEdit" type="LineEdit" parent="."]
+anchor_left = 0.5
+anchor_top = 0.231
+anchor_right = 0.5
+anchor_bottom = 0.231
+margin_left = -54.0
+margin_top = 50.104
+margin_right = 52.0
+margin_bottom = 68.104
+text = "200"
+
+[node name="Label" type="Label" parent="JumpSpeedEdit"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -40.0
+margin_top = -19.0
+margin_right = 40.0
+margin_bottom = -11.0
+text = "Jump speed"
+align = 1
+valign = 1
+
+[connection signal="text_entered" from="SpeedEdit" to="." method="_on_SpeedEdit_text_entered"]
+[connection signal="text_entered" from="JumpSpeedEdit" to="." method="_on_JumpSpeedEdit_text_entered"]

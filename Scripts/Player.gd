@@ -1,7 +1,7 @@
 # Movement from https://kidscancode.org/godot_recipes/2d/platform_character/
 extends KinematicBody2D
 
-export var speed := 200
+export var speed := 170
 export var jump_speed := 200
 export var gravity := 300 # 300
 
@@ -20,8 +20,14 @@ var is_shooting := false
 var shoot_stopped := false
 var reload_started := false
 
+
+onready var floor_raycast = $Raycasts/JumpCast
+
+
 signal on_ammo_used(new_ammo)
 
+func _ready() -> void:
+	Game.player = self
 
 
 
@@ -39,7 +45,6 @@ func get_ammo() -> float:
 
 func shoot_stop() -> void:
 	is_shooting = false
-	print("Stopping")
 	ammo_changed(laser_ammo)
 	$Laser.points[1] = Vector2.ZERO
 	$Laser.visible = false
@@ -59,13 +64,11 @@ func use_ammo_tween() -> void:
 		self, "laser_ammo", laser_ammo, 0.0, tween_time, 1, Tween.TRANS_LINEAR, Tween.EASE_IN
 		
 		)
-	print("Starting Shooting")
 	shoot_tween.start()
 
 
 func _shoot() -> void:
 		if laser_ammo <= 0 and not shoot_stopped:
-			print("Ammo is too low, reloading")
 			$Laser.visible = false
 			shoot_stop() 
 			shoot_stopped = true
@@ -115,7 +118,6 @@ func shoot_process() -> void:
 			use_ammo_tween()
 
 	if not Input.is_action_pressed("shoot") and not shoot_stopped:
-		print("Not shooting, stopping")
 		shoot_stop()
 		shoot_stopped = true
 	
@@ -134,7 +136,7 @@ func shoot_process() -> void:
 	if is_shooting:
 		_shoot()
 
-var friction = 0.1
+var friction = 0.2
 var acceleration = 0.5
 func get_input() -> void:
 	# Movement (:
@@ -166,7 +168,7 @@ var buffer_frames_left := 0
 
 func handle_jump() -> void:
 	
-	if is_on_floor():
+	if is_on_floor() or floor_raycast.is_colliding():
 		buffer_frames_left = 5
 	elif buffer_frames_left > 0:
 		buffer_frames_left -= 1
