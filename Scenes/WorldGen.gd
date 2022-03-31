@@ -18,6 +18,8 @@ export var player_pos := Vector2.ZERO
 var random_rooms = []
 
 var path_string := "res://Scenes/RandomTileMaps/"
+var ammo_replenish = preload("res://Scenes/AmmoReplenish.tscn")
+
 
 var last_gen_x := -1
 
@@ -27,23 +29,35 @@ func clear_range(x_start, y_start, x_end, y_end):
 		for y in range(y_start, y_end):
 			set_cell(x,y, -1)
 
+func load_map(pos: Vector2, map):
+	var cells: Array = get_used_cells_by_id(0) 
+	
+	for cell in cells:
+		var cell_pos: Vector2 = pos + cell
+		set_cell(cell.x, cell.y, 0)
+	
 func add_random_map(x_pos):
 		var chosen_scene = random_rooms[rand_range(0, len(random_rooms)-1)]
-		var new_instance = chosen_scene.instance()
-		new_instance.position = (Vector2(x_pos,-16*3))
-		add_child(new_instance)
+#		print(load_map(Vector2.ZERO, chosen_scene))
+		
+		load_map(Vector2(x_pos, -3), chosen_scene)
+		
+#		var new_instance = chosen_scene.instance()
+#
+#		new_instance.position = (Vector2(x_pos,-16*3))
+#		add_child(new_instance)
 		
 func _process(_delta: float) -> void:
 	
 	var current_cell : =  world_to_map(player_pos)
 	if int(current_cell.x) % 500 == 0:
 		clear_range(min_width, 0, min_width+500, -1)
-		print("cleared")
+#		print("cleared")
 	if (int(current_cell.x) + 48) % 24 == 0 and int(current_cell.x) > 0:
 		var rand_num := int(rand_range(1, 3))
 		if rand_num == 1 and last_gen_x != int(current_cell.x)+48:
 			print("Generating")
-			add_random_map(map_to_world(Vector2(current_cell.x+48, current_cell.y)).x)
+			add_random_map(Vector2(current_cell.x+48, current_cell.y).x)
 			last_gen_x = int(current_cell.x)+48
 			
 func _ready() -> void:
@@ -51,6 +65,7 @@ func _ready() -> void:
 	for i in range(1, 9):
 		var current_path = path_string + str(i) + ".tscn"
 		random_rooms.append(load(current_path))
+	# Loading rooms
 	
 	randomize()
 	openSimplexNoise.seed = randi()
@@ -74,8 +89,18 @@ func generate_map() -> void:
 				rand = 0
 # warning-ignore:narrowing_conversion
 			set_cell(x,y, rand)
-		
-		
+			
+
+			var place_speedup := true if get_cell(x, y) == 0 and get_cell(x, y-1) == -1 else false
+			var rand_check := true if int(rand_range(1, 10)) == 1 else false
+			
+			if place_speedup and rand_check:
+#				print("ayo")
+				var to_place_pos := map_to_world(Vector2(x, y-1)) + Vector2(8,4)
+				var ammo_instance = ammo_replenish.instance()
+				ammo_instance.position = to_place_pos
+				add_child(ammo_instance) 
+					
 		for y2 in range(ceilgen_y_max,ceilgen_y_min-1, -1):
 			
 			var rand := floor(openSimplexNoise.get_noise_2d(x,y2))
@@ -83,9 +108,10 @@ func generate_map() -> void:
 				rand = 0
 #			elif get_cell(x, y2+1) == -1:
 #				rand = -1
-
 # warning-ignore:narrowing_conversion
 			set_cell(x,y2, rand)
+			
+			
 	fill_ceil()
 	fill_floor()
 	min_width += max_width+1

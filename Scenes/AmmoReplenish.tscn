@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scenes/AmmoReplenish.gd" type="Script" id=1]
 
@@ -6,29 +6,56 @@
 resource_name = "Die"
 length = 0.3
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 2
+tracks/0/path = NodePath("Polygon2D:color")
+tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2 ),
+"times": PoolRealArray( 0, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 0, -20 ) ]
+"values": [ Color( 0.956863, 0.643137, 0.105882, 1 ), Color( 0.956863, 0.643137, 0.105882, 0 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Polygon2D:color")
+tracks/1/path = NodePath("Polygon2D:offset")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.2 ),
+"times": PoolRealArray( 0, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Color( 0.956863, 0.643137, 0.105882, 1 ), Color( 0.956863, 0.643137, 0.105882, 0 ) ]
+"values": [ Vector2( -3, -5 ), Vector2( -3, -25 ) ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("Particles2D:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="ParticlesMaterial" id=2]
+emission_shape = 1
+emission_sphere_radius = 6.95
+flag_disable_z = true
+spread = 180.0
+flatness = 0.14
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 30.0
+initial_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel_random = 1.0
+angle_random = 1.0
+scale = 0.5
 
 [node name="Replenish" type="Node2D"]
 script = ExtResource( 1 )
@@ -45,10 +72,22 @@ polygon = PoolVector2Array( 0, 0, 0, 10, 8, 5 )
 visible = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area"]
-polygon = PoolVector2Array( -3, 5, 5, 0, -3, -5 )
+position = Vector2( 0, 4.76837e-07 )
+scale = Vector2( 1.33643, 1.33643 )
+polygon = PoolVector2Array( -3, 5, 1.49653, 2.24479, 5, 0, -3, -5 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Die = SubResource( 1 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+modulate = Color( 0.956863, 0.643137, 0.105882, 1 )
+position = Vector2( 0, -12 )
+emitting = false
+amount = 32
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource( 2 )
 
 [connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

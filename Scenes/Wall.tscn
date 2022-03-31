@@ -31,9 +31,9 @@ script = ExtResource( 1 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_left = -744.0
-margin_top = -188.0
+margin_top = -472.0
 margin_right = 256.0
-margin_bottom = 485.0
+margin_bottom = 769.0
 rect_pivot_offset = Vector2( 226, 197 )
 size_flags_horizontal = 3
 size_flags_vertical = 3

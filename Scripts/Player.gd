@@ -8,7 +8,7 @@ export var gravity := 300 # 300
 export var laser_boost_speed := 7
 export var laser_start_boost_speed := 12
 
-export var laser_max_ammo := 50
+export var laser_max_ammo := 10
 export var laser_ammo: float = laser_max_ammo setget ammo_changed, get_ammo
 export var laser_start_use := 2
 
@@ -101,7 +101,7 @@ func _shoot() -> void:
 
 func shoot_process() -> void:
 		# Shooting stuff
-	
+#	laser_ammo = 1000000000000000
 	var started_shooting := Input.is_action_just_pressed("shoot")
 	
 	

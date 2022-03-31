@@ -3,8 +3,8 @@ extends KinematicBody2D
 var moving := false
 signal lose
 
-var default_speed := 150.0
-var off_screen_speed := 300.0
+var default_speed := 75.0
+var off_screen_speed := 150.0
 
 var speeding_up := false 
 var slowing_down := false
