@@ -15,6 +15,7 @@ func _on_Area_body_entered(body: Node) -> void:
 	
 
 
-func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
+func _on_AnimationPlayer_animation_finished(_anim_name: String) -> void:
+	print("Picked up")
 	queue_free()
 	pass

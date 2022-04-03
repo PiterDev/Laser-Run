@@ -52,6 +52,7 @@ custom_fonts/font = SubResource( 4 )
 text = "FPS: amogus
 
 Velocity: adsasdasdas
+Avg_vel: 123
 Ammo: 123"
 script = ExtResource( 3 )
 

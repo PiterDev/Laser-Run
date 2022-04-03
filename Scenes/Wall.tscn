@@ -71,8 +71,8 @@ process_material = SubResource( 3 )
 
 [node name="Speedup" type="VisibilityNotifier2D" parent="."]
 show_behind_parent = true
-position = Vector2( 0, 149 )
-scale = Vector2( 40, 35 )
+position = Vector2( -69.5, 149 )
+scale = Vector2( 33.05, 62.5 )
 
 [node name="Tweens" type="Node" parent="."]
 

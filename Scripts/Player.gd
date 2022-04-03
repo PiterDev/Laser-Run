@@ -1,17 +1,18 @@
 # Movement from https://kidscancode.org/godot_recipes/2d/platform_character/
 extends KinematicBody2D
 
-export var speed := 170
+export var speed := 250
 export var jump_speed := 200
 export var gravity := 300 # 300
 
-export var laser_boost_speed := 7
-export var laser_start_boost_speed := 12
+export var laser_boost_speed := 2/100
+export var laser_start_boost_speed := 5/100
 
-export var laser_max_ammo := 10
+export var laser_max_ammo := 20
 export var laser_ammo: float = laser_max_ammo setget ammo_changed, get_ammo
 export var laser_start_use := 2
 
+export var avg_velocity := 100.0
 
 
 export var velocity := Vector2.ZERO
@@ -25,6 +26,8 @@ onready var floor_raycast = $Raycasts/JumpCast
 
 
 signal on_ammo_used(new_ammo)
+signal shooting_started
+signal shooting_stopped
 
 func _ready() -> void:
 	Game.player = self
@@ -45,6 +48,7 @@ func get_ammo() -> float:
 
 func shoot_stop() -> void:
 	is_shooting = false
+	emit_signal("shooting_stopped")
 	ammo_changed(laser_ammo)
 	$Laser.points[1] = Vector2.ZERO
 	$Laser.visible = false
@@ -108,6 +112,7 @@ func shoot_process() -> void:
 	if started_shooting:
 		if laser_ammo >= laser_start_use:
 			is_shooting = true
+			emit_signal("shooting_started")
 			shoot_stopped = false
 			$Tweens/ReloadTween.stop_all()
 			$Timers/ReloadTimer.stop()
@@ -137,7 +142,8 @@ func shoot_process() -> void:
 		_shoot()
 
 var friction = 0.2
-var acceleration = 0.5
+var acceleration = 0.2
+var deceleration = 0.2
 func get_input() -> void:
 	# Movement (:
 #	velocity.x = 0
@@ -154,10 +160,17 @@ func get_input() -> void:
 		input_dir -= 1
 	if input_dir != 0:
 		# accelerate when there's input
-		velocity.x = lerp(velocity.x, input_dir * speed, acceleration)
+		if velocity.x > speed:
+			velocity.x = lerp(velocity.x, input_dir * speed, deceleration)
+
+			# Hard cap speed
+			velocity.x = clamp(velocity.x, -speed*2, speed*2)
+		else:
+			velocity.x = lerp(velocity.x, input_dir * speed, acceleration)
 	else:
 		# slow down when there's no input
-		velocity.x = lerp(velocity.x, 0, friction)
+		velocity.x = lerp(velocity.x, 0, deceleration)
+
 		
 #func handle_bounce() -> void:
 #	if get_slide_count() == 0:
@@ -179,11 +192,22 @@ func handle_jump() -> void:
 			velocity.y = -jump_speed
 			buffer_frames_left = 0
 
+var added_values := 0
+func update_avg(new_velocity: float):
+	added_values += 1
+	
+	avg_velocity = avg_velocity + ((new_velocity - avg_velocity) / added_values)
+
+func _on_UpdateAverageTimer_timeout() -> void:
+	update_avg(velocity.x)
+
 
 func _physics_process(delta: float) -> void:
 	get_input()
 	shoot_process()
 	handle_jump()
+	if position.y > 1500 or position.y < -400:
+		Game.lose()
 #	handle_bounce()
 
 
@@ -220,3 +244,6 @@ func _on_ReloadTimer_timeout() -> void:
 		)
 	reload_tween.start()
 	print("Reloading...")
+
+
+

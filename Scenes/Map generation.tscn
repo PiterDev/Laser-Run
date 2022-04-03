@@ -1,14 +1,11 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Scenes/WorldGen.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/WorldGen.gd" type="Script" id=1]
 [ext_resource path="res://Resources/GameTileset.tres" type="TileSet" id=2]
 
 [node name="Tilemap" type="TileMap"]
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 16, 16 )
 format = 1
-tile_data = PoolIntArray( -196608, 0, 0, 983047, 0, 0 )
+tile_data = PoolIntArray( -327679, 0, 0, -327670, 0, 0, 1507317, 0, 0, 1638460, 0, 0, 1769503, 0, 0, 1835068, 0, 0, 2031666, 0, 0, 3145790, 0, 0 )
 script = ExtResource( 1 )
-
-[node name="Node2D" type="Node2D" parent="."]
-position = Vector2( 0, -48 )

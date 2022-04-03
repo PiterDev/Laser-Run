@@ -1,28 +1,49 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/PlayerConnect.gd" type="Script" id=2]
 [ext_resource path="res://Scripts/LaserLeft.gd" type="Script" id=3]
 [ext_resource path="res://Scenes/Wall.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Scripts/MapPlace.gd" type="Script" id=5]
+[ext_resource path="res://Scenes/NewGenerator.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scripts/ScoreLabel.gd" type="Script" id=6]
-[ext_resource path="res://Scripts/ScoreTimer.gd" type="Script" id=7]
+[ext_resource path="res://Scripts/Score.gd" type="Script" id=7]
 [ext_resource path="res://Resources/Theme.tres" type="Theme" id=8]
 [ext_resource path="res://Scenes/Map generation.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Scenes/Debug Menu.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Resources/GameEnv.tres" type="Environment" id=11]
-[ext_resource path="res://Scenes/AmmoReplenish.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Resources/Fonts/DefFont.tres" type="DynamicFont" id=12]
+[ext_resource path="res://Scenes/Spooptext.gd" type="Script" id=13]
+[ext_resource path="res://Scripts/Shake.gd" type="Script" id=14]
 
 [node name="Map" type="Node2D"]
 
-[node name="Node2D" parent="." instance=ExtResource( 12 )]
-position = Vector2( 215, 116 )
-
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 196, 112 )
+position = Vector2( 250, 650 )
 laser_boost_speed = 18
 laser_start_boost_speed = 15
 laser_start_use = 1
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+current = true
+zoom = Vector2( 0.3, 0.3 )
+script = ExtResource( 14 )
+max_roll = 1.0
+
+[node name="Spoopy" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Run" type="RichTextLabel" parent="Spoopy"]
+margin_left = 304.0
+margin_top = 656.0
+margin_right = 604.0
+margin_bottom = 676.0
+theme = ExtResource( 8 )
+custom_fonts/normal_font = ExtResource( 12 )
+bbcode_enabled = true
+bbcode_text = "[shake rate=10 level=30]DONT LOOK BACK[/shake]"
+text = "DONT LOOK BACK"
+script = ExtResource( 13 )
 
 [node name="UILayer" type="CanvasLayer" parent="."]
 
@@ -31,21 +52,19 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -78.0
-margin_top = -26.0
+margin_left = -702.0
+margin_top = -118.0
 margin_bottom = -3.0
 theme = ExtResource( 8 )
 script = ExtResource( 3 )
 
 [node name="ProgressBar" type="ProgressBar" parent="UILayer/LaserLeft"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -36.5
-margin_top = -7.0
-margin_right = 36.5
-margin_bottom = 7.0
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -365.0
+margin_top = -70.0
 value = 100.0
 percent_visible = false
 
@@ -64,19 +83,14 @@ script = ExtResource( 6 )
 
 [node name="Debug Menu" parent="UILayer" instance=ExtResource( 10 )]
 
-[node name="Generator" type="Node" parent="."]
-script = ExtResource( 5 )
-
-[node name="GeneratedMaps" type="Node" parent="Generator"]
-
 [node name="Wall" parent="." instance=ExtResource( 4 )]
-position = Vector2( -138, 3 )
+position = Vector2( -161, 440 )
 z_index = 4
 
-[node name="Node2D" type="Node2D" parent="Wall"]
+[node name="Follow" type="Node2D" parent="Wall"]
 z_index = -5
 
-[node name="Rect" type="ColorRect" parent="Wall/Node2D"]
+[node name="Rect" type="ColorRect" parent="Wall/Follow"]
 visible = false
 margin_left = 5.0
 margin_top = -190.0
@@ -87,18 +101,26 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0.952941, 0.341176, 0.341176, 1 )
 
-[node name="ScoreTimer" type="Timer" parent="."]
-autostart = true
-script = ExtResource( 7 )
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 11 )
 
 [node name="WorldGen" parent="." instance=ExtResource( 9 )]
+visible = false
+position = Vector2( -801, -806 )
 tile_data = PoolIntArray( -196612, 0, 0 )
 
 [node name="PlayerConnect" type="Node" parent="WorldGen"]
 script = ExtResource( 2 )
 
+[node name="NewGenerator" parent="." instance=ExtResource( 5 )]
+
+[node name="Score" type="Node" parent="."]
+script = ExtResource( 7 )
+
+[node name="Update" type="Timer" parent="Score"]
+wait_time = 0.1
+autostart = true
+
 [connection signal="on_ammo_used" from="Player" to="UILayer/LaserLeft" method="_on_Player_on_ammo_used"]
-[connection signal="timeout" from="ScoreTimer" to="ScoreTimer" method="_on_ScoreTimer_timeout"]
+[connection signal="is_close" from="Wall" to="Player/Camera2D" method="_on_Wall_is_close"]
+[connection signal="timeout" from="Score/Update" to="Score" method="_on_Update_timeout"]

@@ -30,58 +30,79 @@ func clear_range(x_start, y_start, x_end, y_end):
 			set_cell(x,y, -1)
 
 func load_map(pos: Vector2, map):
-	var cells: Array = get_used_cells_by_id(0) 
-	
+	var cells: Array = map.get_used_cells_by_id(0) 
 	for cell in cells:
 		var cell_pos: Vector2 = pos + cell
-		set_cell(cell.x, cell.y, 0)
+		set_cell(int(cell_pos.x), int(cell_pos.y), 0)
+	map.queue_free()
+	print("loaded")
 	
 func add_random_map(x_pos):
-		var chosen_scene = random_rooms[rand_range(0, len(random_rooms)-1)]
+		var chosen_scene = random_rooms[int(rand_range(0, len(random_rooms)-1))]
 #		print(load_map(Vector2.ZERO, chosen_scene))
 		
-		load_map(Vector2(x_pos, -3), chosen_scene)
 		
-#		var new_instance = chosen_scene.instance()
-#
-#		new_instance.position = (Vector2(x_pos,-16*3))
-#		add_child(new_instance)
 		
+		var new_instance = chosen_scene.instance()
+
+		new_instance.position = (Vector2(-1000,-1000))
+		new_instance.visible = false
+		
+		add_child(new_instance)
+		print(x_pos)
+		load_map(Vector2(x_pos, 0), new_instance)
 func _process(_delta: float) -> void:
 	
 	var current_cell : =  world_to_map(player_pos)
 	if int(current_cell.x) % 500 == 0:
 		clear_range(min_width, 0, min_width+500, -1)
 #		print("cleared")
-	if (int(current_cell.x) + 48) % 24 == 0 and int(current_cell.x) > 0:
-		var rand_num := int(rand_range(1, 3))
-		if rand_num == 1 and last_gen_x != int(current_cell.x)+48:
-			print("Generating")
-			add_random_map(Vector2(current_cell.x+48, current_cell.y).x)
-			last_gen_x = int(current_cell.x)+48
+	
 			
 func _ready() -> void:
+	randomize()
 	
 	for i in range(1, 9):
 		var current_path = path_string + str(i) + ".tscn"
 		random_rooms.append(load(current_path))
 	# Loading rooms
+
 	
-	randomize()
 	openSimplexNoise.seed = randi()
 	openSimplexNoise.octaves = 1
 	openSimplexNoise.persistence = 0.85
 	openSimplexNoise.period = 0.80
 	openSimplexNoise.lacunarity = 0.75
-	
+
 	generate_map()
 	make_playable()
+
+
+# func place_speed(pos: Vector2):
+# 	# if get_cell(pos.x, pos.y) != -1: return
+# 	print("Run")
 	
+# 	var ammo_instance = ammo_replenish.instance()
+# 	ammo_instance.position = pos
+# 	add_child(ammo_instance) 
+
 
 func generate_map() -> void:
 	
 	
 	for x in range(min_width, max_width):
+		
+		#place_speed(Vector2(x, 20))
+
+		
+		
+		var map_gen_rand_num := int(rand_range(1, 3))
+		if x % 48 == 0 and map_gen_rand_num == 1 and x != 0 and last_gen_x != x:
+			print("Generating on ", x)
+			add_random_map(x)
+			last_gen_x = x
+
+		
 		# floor
 		for y in range(floorgen_y_min, floorgen_y_max+1):
 			var rand := floor(openSimplexNoise.get_noise_2d(x,y))
@@ -96,10 +117,8 @@ func generate_map() -> void:
 			
 			if place_speedup and rand_check:
 #				print("ayo")
-				var to_place_pos := map_to_world(Vector2(x, y-1)) + Vector2(8,4)
-				var ammo_instance = ammo_replenish.instance()
-				ammo_instance.position = to_place_pos
-				add_child(ammo_instance) 
+				#place_speed(map_to_world(Vector2(x, y-1)) + Vector2(8,4))
+				pass
 					
 		for y2 in range(ceilgen_y_max,ceilgen_y_min-1, -1):
 			

@@ -1,0 +1,185 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Resources/GameTileset.tres" type="TileSet" id=1]
+[ext_resource path="res://Scripts/Start animation.gd" type="Script" id=3]
+[ext_resource path="res://Resources/Theme.tres" type="Theme" id=4]
+
+[sub_resource type="Animation" id=1]
+resource_name = "Startup"
+length = 15.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("RigidBody2D/ColorRect:color")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.3, 0.5, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0.141176, 0.396078, 0.458824, 1 ), Color( 0.141176, 0.396078, 0.458824, 1 ), Color( 0, 0.811765, 1, 1 ), Color( 0.141176, 0.396078, 0.458824, 1 ), Color( 0, 0.811765, 1, 1 ), Color( 0, 0.811765, 1, 1 ), Color( 0.109804, 0.490196, 0.580392, 1 ), Color( 0, 0.811765, 1, 1 ), Color( 0.109804, 0.490196, 0.580392, 1 ), Color( 0.0564706, 0.64549, 0.783529, 1 ), Color( 0.109804, 0.490196, 0.580392, 1 ), Color( 0, 0.811765, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Main/Mini:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.1, 4, 8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, -300 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Main/MiniReplacement:position")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 4, 9, 10.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 100 ), Vector2( 0, 100 ), Vector2( 0, 100 ), Vector2( 0, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Main/MiniTop:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 9, 10.5, 11.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 70, -250 ), Vector2( 70, -250 ), Vector2( 0, -272 ), Vector2( 0, -208 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Main:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.1, 13, 15 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Gradient" id=5]
+offsets = PoolRealArray( 0.0236686, 0.47929, 1 )
+colors = PoolColorArray( 0.00817323, 0.00456238, 0.0507813, 1, 0.179688, 0.317261, 0.359375, 1, 0.804688, 0.804688, 0.804688, 1 )
+
+[sub_resource type="GradientTexture" id=7]
+gradient = SubResource( 5 )
+
+[sub_resource type="Environment" id=8]
+background_mode = 4
+background_color = Color( 0.270588, 0.113725, 0.113725, 1 )
+background_energy = 1.29
+ambient_light_energy = 0.0
+ssao_radius = 0.1
+glow_enabled = true
+glow_levels/1 = true
+glow_levels/2 = true
+glow_levels/4 = true
+glow_intensity = 1.0
+glow_strength = 0.82
+glow_blend_mode = 0
+glow_hdr_threshold = 0.22
+glow_hdr_luminance_cap = 4.58
+glow_hdr_scale = 1.16
+glow_bicubic_upscale = true
+glow_high_quality = true
+adjustment_enabled = true
+adjustment_brightness = 1.01
+adjustment_contrast = 1.2
+adjustment_saturation = 1.5
+adjustment_color_correction = SubResource( 7 )
+
+[sub_resource type="PhysicsMaterial" id=3]
+bounce = 0.1
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 6, 10 )
+
+[node name="Start animation" type="Node"]
+script = ExtResource( 3 )
+
+[node name="StartGame" type="AnimationPlayer" parent="."]
+anims/Startup = SubResource( 1 )
+
+[node name="Main" type="TileMap" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( -524279, 0, 0, -524275, 0, 0, -458743, 0, 0, -458739, 0, 0, -393207, 0, 0, -393203, 0, 0, -327671, 0, 0, -327667, 0, 0, -262135, 0, 0, -262131, 0, 0, -196599, 0, 0, -196595, 0, 0, -131063, 0, 0, -131059, 0, 0, -65527, 0, 0, -65523, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 13, 0, 0, 14, 0, 0, 15, 0, 0, 16, 0, 0, 17, 0, 0, 18, 0, 0, 19, 0, 0, 20, 0, 0, 21, 0, 0, 22, 0, 0, 23, 0, 0, 65536, 0, 0, 65559, 0, 0, 131072, 0, 0, 131095, 0, 0, 196608, 0, 0, 196631, 0, 0, 262144, 0, 0, 262167, 0, 0, 327680, 0, 0, 327703, 0, 0, 393216, 0, 0, 393239, 0, 0, 458752, 0, 0, 458775, 0, 0, 524288, 0, 0, 524311, 0, 0, 589824, 0, 0, 589847, 0, 0, 655360, 0, 0, 655383, 0, 0, 720896, 0, 0, 720919, 0, 0, 786432, 0, 0, 786455, 0, 0, 851968, 0, 0, 851969, 0, 0, 851970, 0, 0, 851971, 0, 0, 851972, 0, 0, 851973, 0, 0, 851974, 0, 0, 851975, 0, 0, 851976, 0, 0, 851977, 0, 0, 851981, 0, 0, 851982, 0, 0, 851983, 0, 0, 851984, 0, 0, 851985, 0, 0, 851986, 0, 0, 851987, 0, 0, 851988, 0, 0, 851989, 0, 0, 851990, 0, 0, 851991, 0, 0 )
+
+[node name="Mini" type="TileMap" parent="Main"]
+position = Vector2( 0, -300 )
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 851978, 0, 0, 851979, 0, 0, 851980, 0, 0 )
+
+[node name="MiniReplacement" type="TileMap" parent="Main"]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 851978, 0, 0, 851979, 0, 0, 851980, 0, 0 )
+
+[node name="MiniTop" type="TileMap" parent="Main"]
+position = Vector2( 0, -208 )
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 851978, 0, 0, 851979, 0, 0, 851980, 0, 0 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 8 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+visible = false
+position = Vector2( 192, 114 )
+current = true
+zoom = Vector2( 0.2, 0.2 )
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+position = Vector2( 173, -69 )
+rotation = -1.5708
+mode = 2
+physics_material_override = SubResource( 3 )
+gravity_scale = 5.0
+
+[node name="ColorRect" type="ColorRect" parent="RigidBody2D"]
+margin_right = 12.0
+margin_bottom = 20.0
+color = Color( 0, 0.811765, 1, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+position = Vector2( 6, 10 )
+shape = SubResource( 2 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enable = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -254.0
+margin_top = 27.0
+margin_right = 346.0
+margin_bottom = 97.0
+theme = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "LASER [color=aqua]RUN[/color]"
+text = "LASER RUN"
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+margin_right = 1920.0
+margin_bottom = 1080.0

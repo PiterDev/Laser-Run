@@ -5,6 +5,7 @@ var high_score := 0 setget change_high_score
 var player setget set_player
 var player_ready := false
 
+signal lost
 
 func set_player(new_player):
 	player = new_player
@@ -15,7 +16,21 @@ func set_player(new_player):
 const score_path := "user://laser_run_scores.json"
 var scores := {}
 
+
+func lose() -> void:
+	emit_signal("lost")
+	# warning-ignore:return_value_discarded
+	write_json_file(Game.score_path, Game.scores)
+	print("Writing data...")
+	get_tree().change_scene("res://Scenes/Lose.tscn")
+
+func on_lose() -> void:
+	score = 0
+	player = null
+	player_ready = false
+
 func _ready() -> void:
+	connect("lost", self, "on_lose")
 	scores = read_json_file(score_path)
 	print(scores)
 	high_score = scores["high_score"]
