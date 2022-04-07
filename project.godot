@@ -20,13 +20,18 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Laser Platformer"
+config/name="Laser Run"
+config/description="Epic game about glitches and lasers :)"
 run/main_scene="res://Scenes/Main Menu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 Game="*res://Game.gd"
+
+[debug]
+
+shapes/collision/shape_color=Color( 1, 1, 1, 0.419608 )
 
 [display]
 

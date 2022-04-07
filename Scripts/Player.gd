@@ -1,6 +1,9 @@
 # Movement from https://kidscancode.org/godot_recipes/2d/platform_character/
 extends KinematicBody2D
 
+export var glitch := 0
+export var glitch_limit := 100
+
 export var speed := 250
 export var jump_speed := 200
 export var gravity := 300 # 300
@@ -10,7 +13,7 @@ export var laser_start_boost_speed := 5/100
 
 export var laser_max_ammo := 20
 export var laser_ammo: float = laser_max_ammo setget ammo_changed, get_ammo
-export var laser_start_use := 2
+export var laser_start_use := 0.5
 
 export var avg_velocity := 100.0
 
@@ -18,7 +21,7 @@ export var avg_velocity := 100.0
 export var velocity := Vector2.ZERO
 var last_mouse_pos := Vector2.ZERO
 var is_shooting := false
-var shoot_stopped := false
+var shoot_stopped := false setget shoot_stop_changed
 var reload_started := false
 
 
@@ -32,7 +35,12 @@ signal shooting_stopped
 func _ready() -> void:
 	Game.player = self
 
-
+func shoot_stop_changed(new_value: bool):
+	shoot_stopped = new_value
+	if shoot_stopped:
+		emit_signal("shooting_stopped")
+	else:
+		emit_signal("shooting_started")
 
 func ammo_changed(new_value) -> void:
 	laser_ammo = new_value
@@ -48,7 +56,7 @@ func get_ammo() -> float:
 
 func shoot_stop() -> void:
 	is_shooting = false
-	emit_signal("shooting_stopped")
+#	emit_signal("shooting_stopped")
 	ammo_changed(laser_ammo)
 	$Laser.points[1] = Vector2.ZERO
 	$Laser.visible = false
@@ -75,7 +83,7 @@ func _shoot() -> void:
 		if laser_ammo <= 0 and not shoot_stopped:
 			$Laser.visible = false
 			shoot_stop() 
-			shoot_stopped = true
+			self.shoot_stopped = true
 			return
 		
 		$LaserRayCast.cast_to = get_local_mouse_position() * 100
@@ -112,8 +120,8 @@ func shoot_process() -> void:
 	if started_shooting:
 		if laser_ammo >= laser_start_use:
 			is_shooting = true
-			emit_signal("shooting_started")
-			shoot_stopped = false
+#			emit_signal("shooting_started")
+			self.shoot_stopped = false
 			$Tweens/ReloadTween.stop_all()
 			$Timers/ReloadTimer.stop()
 			reload_started = false
@@ -124,7 +132,7 @@ func shoot_process() -> void:
 
 	if not Input.is_action_pressed("shoot") and not shoot_stopped:
 		shoot_stop()
-		shoot_stopped = true
+		self.shoot_stopped = true
 	
 	
 	$PreviewRaycast.cast_to = get_local_mouse_position().normalized() * 100

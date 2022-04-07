@@ -5,6 +5,8 @@ var high_score := 0 setget change_high_score
 var player setget set_player
 var player_ready := false
 
+var random = RandomNumberGenerator.new()
+
 signal lost
 
 func set_player(new_player):
@@ -35,6 +37,7 @@ func _ready() -> void:
 	print(scores)
 	high_score = scores["high_score"]
 	print(scores["high_score"])
+	random.randomize()
 
 func _notification(what: int) -> void:
 	match what:

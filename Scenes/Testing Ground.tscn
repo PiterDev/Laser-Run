@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Resources/GameTileset.tres" type="TileSet" id=1]
-[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Debug Menu.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/AmmoReplenish.tscn" type="PackedScene" id=4]
 
@@ -68,3 +68,7 @@ position = Vector2( 289, 145 )
 
 [node name="Replenish5" parent="." instance=ExtResource( 4 )]
 position = Vector2( 289, 145 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0

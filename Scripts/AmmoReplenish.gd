@@ -2,7 +2,8 @@ extends Node2D
 
 var picked_up := false
 
-
+func randomize_sound():
+	$PickUpSound.pitch_scale = Game.random.randf_range(0.8, 1.2)
 
 
 func _on_Area_body_entered(body: Node) -> void:
@@ -12,6 +13,8 @@ func _on_Area_body_entered(body: Node) -> void:
 	print(body.laser_ammo)
 	print(body.name)
 	$AnimationPlayer.play("Die")
+	randomize_sound()
+	$PickUpSound.play()
 	
 
 
