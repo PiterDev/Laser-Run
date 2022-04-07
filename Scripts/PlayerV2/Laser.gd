@@ -14,6 +14,8 @@ var Movement
 
 var is_shooting := false
 
+onready var laser_sound = owner.get_node("Audio").get_node("LaserSound")
+
 func _ready() -> void:
 	Movement = owner.get_node("Scripts").get_node("Movement")
 	$Raycasts/LaserRayCast.add_exception(owner)
@@ -46,20 +48,24 @@ func _process(_delta: float) -> void:
 		if not is_reloading and not reload_timer_started: 
 			reload_timer_started = true
 			$ReloadTimer.start()
+		laser_sound.stop()
 		is_shooting = false
 		return
 	if laser_ammo <= 0:
 		laser_ammo = 0.0
 		$Lines/Laser.points[1] = Vector2(0,0)
-		if not is_reloading and not reload_timer_started: 
+		if not is_reloading and not reload_timer_started and owner.is_on_floor(): 
 			reload_timer_started = true
 			$ReloadTimer.start()
 			print("Starting reload")
+		laser_sound.stop()
 		is_shooting = false
 		return
 	
 	if is_reloading:
 		is_reloading = false
+	if not laser_sound.playing:
+		laser_sound.play()
 	is_shooting = true
 	
 	$Raycasts/LaserRayCast.cast_to = get_local_mouse_position() * 100

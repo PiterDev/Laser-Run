@@ -5,6 +5,8 @@ var high_score := 0 setget change_high_score
 var player setget set_player
 var player_ready := false
 
+var glitch_transition_pos := 0.0
+
 var random = RandomNumberGenerator.new()
 
 signal lost

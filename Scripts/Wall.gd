@@ -4,7 +4,9 @@ var moving := false
 signal lose
 signal is_close
 
-var default_speed := 170.0
+var default_speed := 200.0
+
+
 var off_screen_speed := 300.0
 
 var speeding_up := false 
@@ -76,7 +78,7 @@ func slowdown():
 func _on_MoveTimer_timeout() -> void:
 	$Tweens/StartTween.interpolate_property(
 
-		self, "speed", speed, default_speed, 5.0, Tween.TRANS_LINEAR, Tween.EASE_IN
+		self, "speed", speed, default_speed, 7.0, Tween.TRANS_LINEAR, Tween.EASE_IN
 
 		)
 	$Tweens/StartTween.start()
