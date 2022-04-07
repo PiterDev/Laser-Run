@@ -8,6 +8,8 @@ var player_ready := false
 var random = RandomNumberGenerator.new()
 
 signal lost
+signal ammo_changed(new_ammo)
+signal pickup
 
 func set_player(new_player):
 	player = new_player

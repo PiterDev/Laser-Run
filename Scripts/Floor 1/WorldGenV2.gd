@@ -18,8 +18,8 @@ func make_noise() -> OpenSimplexNoise:
 var ceiling_noise := make_noise()
 var floor_noise := make_noise()
 
-var max_ceiling_height := 15.0
-var max_floor_height := 15.0
+var max_ceiling_height := 14.0
+var max_floor_height := 14.0
 
 var collectible_generate_y_min := 21
 var collectible_generate_y_max := 44

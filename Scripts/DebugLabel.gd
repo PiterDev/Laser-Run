@@ -15,4 +15,4 @@ func _process(_delta: float) -> void:
 	
 	"""
 
-	text = text_to_set % [Engine.get_frames_per_second(), player.velocity ,player.avg_velocity, round(player.laser_ammo)]
+	#text = text_to_set % [Engine.get_frames_per_second(), player.velocity ,player.avg_velocity, round(player.laser_ammo)]

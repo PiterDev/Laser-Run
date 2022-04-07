@@ -32,9 +32,6 @@ signal on_ammo_used(new_ammo)
 signal shooting_started
 signal shooting_stopped
 
-func _ready() -> void:
-	Game.player = self
-
 func shoot_stop_changed(new_value: bool):
 	shoot_stopped = new_value
 	if shoot_stopped:
@@ -48,7 +45,7 @@ func ammo_changed(new_value) -> void:
 	
 	if new_value < laser_max_ammo and not is_shooting and not reload_started:
 		
-		$Timers/ReloadTimer.start()
+#		$Timers/ReloadTimer.start()
 		reload_started = true
 
 func get_ammo() -> float:
@@ -62,21 +59,21 @@ func shoot_stop() -> void:
 	$Laser.visible = false
 	$Particles2D.emitting = false
 	$Particles2D.position = Vector2.ZERO
-	$Tweens/ShootTween.stop_all()
+#	$Tweens/ShootTween.stop_all()
 	
 
-func use_ammo_tween() -> void:
-	var shoot_tween = $Tweens/ShootTween
-	if shoot_tween.is_active():
-		return
-	
-	var tween_time := (laser_ammo + 1) * 0.2
-	shoot_tween.interpolate_property(
-		
-		self, "laser_ammo", laser_ammo, 0.0, tween_time, 1, Tween.TRANS_LINEAR, Tween.EASE_IN
-		
-		)
-	shoot_tween.start()
+#func use_ammo_tween() -> void:
+#	var shoot_tween = $Tweens/ShootTween
+#	if shoot_tween.is_active():
+#		return
+#
+#	var tween_time := (laser_ammo + 1) * 0.2
+#	shoot_tween.interpolate_property(
+#
+#		self, "laser_ammo", laser_ammo, 0.0, tween_time, 1, Tween.TRANS_LINEAR, Tween.EASE_IN
+#
+#		)
+#	shoot_tween.start()
 
 
 func _shoot() -> void:
@@ -109,7 +106,8 @@ func _shoot() -> void:
 		var direction_to_mouse = global_position.direction_to(get_global_mouse_position()) * -1
 		direction_to_mouse.x *= 2 # x movement too slow ):
 		velocity += direction_to_mouse * laser_boost_speed
-
+		laser_ammo = clamp(laser_ammo-0.1, 0, laser_max_ammo)
+		print("lerped")
 
 func shoot_process() -> void:
 		# Shooting stuff
@@ -122,13 +120,14 @@ func shoot_process() -> void:
 			is_shooting = true
 #			emit_signal("shooting_started")
 			self.shoot_stopped = false
-			$Tweens/ReloadTween.stop_all()
-			$Timers/ReloadTimer.stop()
+
 			reload_started = false
-			self.laser_ammo -= laser_start_use
+#			self.laser_ammo -= laser_start_use
 			var direction_to_mouse = global_position.direction_to(get_global_mouse_position()) * -1
 			velocity += direction_to_mouse * laser_start_boost_speed
-			use_ammo_tween()
+
+
+#			laser_ammo = lerp(laser_ammo, laser_ammo, )
 
 	if not Input.is_action_pressed("shoot") and not shoot_stopped:
 		shoot_stop()
@@ -238,20 +237,20 @@ func _physics_process(delta: float) -> void:
 
 
 
-func _on_ReloadTimer_timeout() -> void:
-	reload_started = false
-	var reload_tween = $Tweens/ReloadTween
-	if reload_tween.is_active():
-		return
-	
-	var tween_time := (laser_max_ammo - laser_ammo) / 2.0
-	reload_tween.interpolate_property(
-		
-		self, "laser_ammo", laser_ammo, laser_max_ammo, tween_time, 1, Tween.TRANS_LINEAR, Tween.EASE_IN
-		
-		)
-	reload_tween.start()
-	print("Reloading...")
+#func _on_ReloadTimer_timeout() -> void:
+##	reload_started = false
+##	var reload_tween = $Tweens/ReloadTween
+##	if reload_tween.is_active():
+##		return
+##
+##	var tween_time := (laser_max_ammo - laser_ammo) / 2.0
+##	reload_tween.interpolate_property(
+##
+##		self, "laser_ammo", laser_ammo, laser_max_ammo, tween_time, 1, Tween.TRANS_LINEAR, Tween.EASE_IN
+##
+##		)
+##	reload_tween.start()
+#	print("Reloading...")
 
 
 

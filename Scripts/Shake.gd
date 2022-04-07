@@ -20,7 +20,7 @@ func _ready():
 
 
 func add_trauma(amount):
-    trauma = min(trauma + amount, 1.0)
+	trauma = min(trauma + amount, 1.0)
 
 func shake():
 	var amount = pow(trauma, trauma_power)
@@ -31,11 +31,11 @@ func shake():
 
 
 func _process(delta):
-    if target:
-        global_position = get_node(target).global_position
-    if trauma:
-        trauma = max(trauma - decay * delta, 0)
-        shake()
+	if target:
+		global_position = get_node(target).global_position
+	if trauma:
+		trauma = max(trauma - decay * delta, 0)
+		shake()
 
 func _on_Wall_is_close() -> void:
 	trauma = 0.1

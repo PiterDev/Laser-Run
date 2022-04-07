@@ -1,7 +1,7 @@
-extends KinematicBody2D
+extends Node
 
 export var speed := 250
-export var jump_speed := 200
+export var jump_speed := 180
 export var gravity := 300 
 
 export var velocity := Vector2.ZERO
@@ -11,6 +11,24 @@ export var velocity := Vector2.ZERO
 var friction := 0.2
 var acceleration := 0.2
 var deceleration := 0.2
+
+onready var player = owner
+onready var laser = player.get_node("Laser")
+onready var jump_sound = player.get_node("Audio").get_node("JumpSound")
+
+var jumps_made := 2
+var max_jumps := 2
+
+func _physics_process(delta: float) -> void:
+	get_input()
+	handle_jump()
+	
+	if player.position.y > 1500 or player.position.y < -400:
+		Game.lose()
+		
+	velocity.y += gravity * delta
+	velocity = player.move_and_slide(velocity, Vector2.UP)
+
 
 func get_input() -> void:
 
@@ -31,26 +49,22 @@ func get_input() -> void:
 	else:
 		# slow down when there's no input
 		velocity.x = lerp(velocity.x, 0, deceleration)
-
-func handle_jump() -> void:
-#	if is_on_floor() or floor_raycast.is_colliding():
-#		buffer_frames_left = 5
-#	elif buffer_frames_left > 0:
-#		buffer_frames_left -= 1
-##
-#	if Input.is_action_just_pressed("move_up"):
-#		if buffer_frames_left > 0:
-#
-#			velocity.y = -jump_speed
-#			buffer_frames_left = 0
-	pass
-
-func _physics_process(delta: float) -> void:
-	get_input()
-	handle_jump()
-	
-	if position.y > 1500 or position.y < -400:
-		Game.lose()
+	if Input.is_action_just_pressed("shoot"):
+		laser.should_shoot = true
+	if Input.is_action_just_released("shoot"):
+		laser.should_shoot = false
 		
-	velocity.y += gravity * delta
-	velocity = move_and_slide(velocity, Vector2.UP)
+	if player.is_on_floor():
+		jumps_made = 0
+	
+func handle_jump() -> void:
+	if jumps_made == 0 and not player.is_on_floor(): return 
+#	if not player.is_on_floor(): return
+	if Input.is_action_just_pressed("move_up") and jumps_made < max_jumps:
+		jumps_made += 1
+		print(jumps_made)
+		velocity.y = -jump_speed
+		jump_sound.play()
+
+
+

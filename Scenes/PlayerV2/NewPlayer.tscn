@@ -1,15 +1,80 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Scripts/PlayerV2/PlayerMovement.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/PlayerV2/PlayerScriptUtils.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/PlayerV2/PlayerLogic.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/Line2D.gd" type="Script" id=4]
+[ext_resource path="res://Scripts/PlayerV2/Laser.gd" type="Script" id=5]
+[ext_resource path="res://Resources/Sounds/Laser.ogg" type="AudioStream" id=6]
+[ext_resource path="res://Scripts/PlayerV2/AmmoDisplay.gd" type="Script" id=7]
+[ext_resource path="res://Resources/Fonts/DefFont.tres" type="DynamicFont" id=8]
+[ext_resource path="res://Resources/Theme.tres" type="Theme" id=9]
+[ext_resource path="res://Resources/Sounds/jump.ogg" type="AudioStream" id=10]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 3.0
 height = 4.0
 
-[node name="NewPlayer" type="KinematicBody2D"]
-script = ExtResource( 1 )
+[sub_resource type="Curve" id=2]
+max_value = 5.0
+_data = [ Vector2( 0.0188679, 0.318182 ), 0.0, 1.23017, 0, 0, Vector2( 0.268868, 0.5 ), 2.84711, 2.84711, 0, 0, Vector2( 0.990566, 0.636364 ), -3.68449, -0.856565, 0, 0 ]
 
-[node name="Movement" type="Node" parent="."]
+[sub_resource type="Gradient" id=3]
+offsets = PoolRealArray( 0, 0.585635, 1 )
+colors = PoolColorArray( 1, 0.4, 0.4, 1, 1, 0.419608, 0.333333, 1, 1, 0.639216, 0.639216, 1 )
+
+[sub_resource type="Curve" id=4]
+_data = [ Vector2( 0, 1 ), 0.0, -0.963636, 0, 0, Vector2( 1, 0 ), -1.26649, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=5]
+max_value = 1.34
+_data = [ Vector2( 0.598765, 0 ), 0.0, 1.77611, 0, 0, Vector2( 1, 0.694364 ), 1.90979, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=6]
+offsets = PoolRealArray( 0.143345, 0.948805 )
+colors = PoolColorArray( 0.0078125, 0.697693, 1, 1, 0.871094, 0.871094, 0.871094, 1 )
+
+[sub_resource type="ShaderMaterial" id=11]
+
+[sub_resource type="Gradient" id=7]
+offsets = PoolRealArray( 0.0236686, 0.47929, 1 )
+colors = PoolColorArray( 0.00817323, 0.00456238, 0.0507813, 1, 0.179688, 0.317261, 0.359375, 1, 0.804688, 0.804688, 0.804688, 1 )
+
+[sub_resource type="GradientTexture" id=8]
+gradient = SubResource( 7 )
+
+[sub_resource type="Environment" id=9]
+background_mode = 4
+background_color = Color( 0.270588, 0.113725, 0.113725, 1 )
+background_energy = 1.29
+ambient_light_energy = 0.0
+ssao_radius = 0.1
+glow_enabled = true
+glow_levels/1 = true
+glow_levels/2 = true
+glow_levels/4 = true
+glow_intensity = 2.17
+glow_strength = 0.82
+glow_blend_mode = 0
+glow_hdr_threshold = 0.22
+glow_hdr_luminance_cap = 4.58
+glow_hdr_scale = 1.16
+glow_bicubic_upscale = true
+glow_high_quality = true
+adjustment_enabled = true
+adjustment_brightness = 1.01
+adjustment_contrast = 1.2
+adjustment_saturation = 1.5
+adjustment_color_correction = SubResource( 8 )
+
+[node name="NewPlayer" type="KinematicBody2D" groups=["Player"]]
+script = ExtResource( 3 )
+
+[node name="PlayerCam" type="Camera2D" parent="."]
+position = Vector2( 3, 5 )
+current = true
+zoom = Vector2( 0.3, 0.3 )
+smoothing_enabled = true
 
 [node name="Rect" type="Polygon2D" parent="."]
 z_index = 1
@@ -20,3 +85,105 @@ polygon = PoolVector2Array( 6, 10, 0, 10, 0, 0, 6, 0 )
 [node name="Collisions" type="CollisionShape2D" parent="."]
 position = Vector2( 3, 5 )
 shape = SubResource( 1 )
+
+[node name="Laser" type="Node2D" parent="."]
+script = ExtResource( 5 )
+
+[node name="ReloadTimer" type="Timer" parent="Laser"]
+wait_time = 5.0
+one_shot = true
+
+[node name="AmmoChangeTimer" type="Timer" parent="Laser"]
+wait_time = 0.1
+autostart = true
+
+[node name="Lines" type="Node2D" parent="Laser"]
+
+[node name="Laser" type="Line2D" parent="Laser/Lines"]
+position = Vector2( 3, 5 )
+z_index = 1
+points = PoolVector2Array( 0, 0, 0, 0 )
+width = 8.0
+width_curve = SubResource( 2 )
+default_color = Color( 1, 0.4, 0.4, 1 )
+gradient = SubResource( 3 )
+
+[node name="Preview" type="Line2D" parent="Laser/Lines"]
+position = Vector2( 3, 5 )
+z_index = -1
+points = PoolVector2Array( 0, 0, 0, 0 )
+width = 1.0
+width_curve = SubResource( 4 )
+default_color = Color( 1, 0.454902, 0.4, 1 )
+
+[node name="Raycasts" type="Node2D" parent="Laser"]
+position = Vector2( 3, 5 )
+
+[node name="LaserRayCast" type="RayCast2D" parent="Laser/Raycasts"]
+enabled = true
+cast_to = Vector2( 0, 100 )
+
+[node name="PreviewRaycast" type="RayCast2D" parent="Laser/Raycasts"]
+enabled = true
+cast_to = Vector2( 0, 100 )
+
+[node name="Scripts" type="Node" parent="."]
+script = ExtResource( 2 )
+__meta__ = {
+"_editor_description_": "Utilities for the player scripts"
+}
+
+[node name="Movement" type="Node" parent="Scripts"]
+script = ExtResource( 1 )
+jump_speed = 250
+
+[node name="Trail" type="Line2D" parent="."]
+position = Vector2( 3, 5 )
+z_index = -3
+points = PoolVector2Array( 3, 5, 3, 5, 3, 5 )
+width_curve = SubResource( 5 )
+default_color = Color( 0.4, 0.501961, 1, 1 )
+gradient = SubResource( 6 )
+script = ExtResource( 4 )
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="LaserSound" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource( 6 )
+volume_db = -30.0
+pitch_scale = 1.1
+
+[node name="JumpSound" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource( 10 )
+
+[node name="PlayerUI" type="CanvasLayer" parent="."]
+
+[node name="Container" type="Control" parent="PlayerUI"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -580.0
+margin_top = -328.0
+rect_pivot_offset = Vector2( -478, 412 )
+theme = ExtResource( 9 )
+
+[node name="ProgressBar" type="ProgressBar" parent="PlayerUI/Container"]
+material = SubResource( 11 )
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -150.0
+margin_top = -150.0
+custom_fonts/font = ExtResource( 8 )
+value = 50.0
+script = ExtResource( 7 )
+
+[node name="Tween" type="Tween" parent="PlayerUI/Container/ProgressBar"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 9 )
+
+[connection signal="timeout" from="Laser/ReloadTimer" to="Laser" method="_on_ReloadTimer_timeout"]
+[connection signal="timeout" from="Laser/AmmoChangeTimer" to="Laser" method="_on_AmmoChangeTimer_timeout"]
