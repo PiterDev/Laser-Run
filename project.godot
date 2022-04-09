@@ -144,6 +144,14 @@ pause={
  ]
 }
 
+[layer_names]
+
+2d_render/layer_1="fds"
+2d_physics/layer_1="walls"
+2d_physics/layer_2="player"
+2d_physics/layer_3="collectibles"
+2d_physics/layer_4="enemies"
+
 [physics]
 
 common/enable_pause_aware_picking=true

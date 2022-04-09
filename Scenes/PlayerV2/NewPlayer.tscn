@@ -203,6 +203,8 @@ shader_param/shake_block_size = 30.5
 shader_param/shake_color_rate = 0.1
 
 [node name="NewPlayer" type="KinematicBody2D" groups=["Player"]]
+collision_layer = 2
+collision_mask = 13
 script = ExtResource( 3 )
 
 [node name="PlayerCam" type="Camera2D" parent="."]

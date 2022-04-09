@@ -21,7 +21,7 @@ func laser_ammo_set(new_value):
 	laser_ammo = new_value if new_value >= 0 else 0.0
 	if player and player.laser_ammo != laser_ammo:
 		player.laser_ammo = laser_ammo
-		print(str(player.laser_ammo) + "YO")
+#		print(str(player.laser_ammo) + "YO")
 
 func _ready() -> void:
 	print(player)

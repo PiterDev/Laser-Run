@@ -18,8 +18,8 @@ func make_noise() -> OpenSimplexNoise:
 var ceiling_noise := make_noise()
 var floor_noise := make_noise()
 
-var max_ceiling_height := 14.0
-var max_floor_height := 14.0
+var max_ceiling_height := 20.0
+var max_floor_height := 20.0
 
 var collectible_generate_y_min := 21
 var collectible_generate_y_max := 44
@@ -30,13 +30,13 @@ var ammo_replenish := preload("res://Scenes/AmmoReplenish.tscn")
 
 
 var chunk_scene := preload("res://Scenes/Floor 1/WorldGenChunk.tscn")
-var chunk_size := Vector2(120, 68)
+var chunk_size := Vector2(119, 67)
 var chunk_amount := 0 setget chunks_changed
 
-var current_x_pos := 1920
+var current_x_pos := 752
 
-var chunk_generate_start := Vector2(0, 21)
-var chunk_generate_end := Vector2(119, 45)
+var chunk_generate_start := Vector2(0, 16)
+var chunk_generate_end := Vector2(119, 49)
 
 
 
@@ -68,7 +68,7 @@ func chunks_changed(new_value: int) -> void:
 		generate_chunks(10-chunk_amount)
 
 func _chunk_removed():
-	chunk_amount -= 1
+	self.chunk_amount -= 1
 
 func generate_chunk(x_pos: int) -> PackedScene:
 	var new_chunk = chunk_scene.instance()
@@ -77,7 +77,7 @@ func generate_chunk(x_pos: int) -> PackedScene:
 	# Generate the chunk
 	
 	# Generate the floor
-	for x in range(0, chunk_size.x):
+	for x in range(0, chunk_size.x+1):
 		
 		
 		# Making the floor
@@ -86,7 +86,7 @@ func generate_chunk(x_pos: int) -> PackedScene:
 			new_chunk.set_cell(x, y, 0)
 
 	# Generate the ceiling
-	for x in range(0, chunk_size.x):
+	for x in range(0, chunk_size.x+1):
 		
 		var ceiling_height = ceil(ceiling_noise.get_noise_1d(x) * max_ceiling_height)
 		for y in range(chunk_generate_start.y, chunk_generate_start.y+ceiling_height):
@@ -95,19 +95,19 @@ func generate_chunk(x_pos: int) -> PackedScene:
 	new_chunk.connect("clearing", self, "_chunk_removed")
 	
 	# Generate collectibles
-	for x in range(0, chunk_size.x):
+	for x in range(0, chunk_size.x+1):
 		var should_place = get_bool(10)
 		if not should_place:
 			continue
 		var to_place_y := get_num(collectible_generate_y_min, collectible_generate_y_max)
-		print(to_place_y)
+#		print(to_place_y)
 		var chosen_cell = new_chunk.get_cell(x, to_place_y)
 		if chosen_cell != -1:
 			continue
 		var local_pos: Vector2 = new_chunk.map_to_world(Vector2(x, to_place_y))+Vector2(8,8)
 		var global_pos: Vector2 = new_chunk.to_global(local_pos)
 		place_ammo(global_pos)
-	print(new_chunk.position)
+#	print(new_chunk.position)
 	return new_chunk
 
 func remove_all_chunks():
@@ -120,7 +120,7 @@ func generate_chunks(chunk_num: int):
 		# Generate chunk and name it cause why not
 		var made_chunk = generate_chunk(current_x_pos)
 		# made_chunk.name = "Chunk " + str(chunk_amount)
-		print(made_chunk.position)
+#		print(made_chunk.position)
 		current_x_pos += 1920
 	chunk_amount += chunk_num
 

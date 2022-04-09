@@ -61,7 +61,7 @@ func speedup():
 	self, "speed", speed, off_screen_speed, 3.0, Tween.TRANS_LINEAR, Tween.EASE_IN
 
 	)
-	print("yooo")
+#	print("yooo")
 	speed = off_screen_speed
 	$Tweens/SpeedUpTween.start()
 

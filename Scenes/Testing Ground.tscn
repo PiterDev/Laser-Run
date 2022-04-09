@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Resources/GameTileset.tres" type="TileSet" id=1]
+[ext_resource path="res://Scenes/Floor 1/Turret.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Debug Menu.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/AmmoReplenish.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/PlayerV2/NewPlayer.tscn" type="PackedScene" id=5]
@@ -37,6 +38,7 @@ adjustment_saturation = 1.5
 adjustment_color_correction = SubResource( 7 )
 
 [node name="Testing Ground" type="Node2D"]
+position = Vector2( -134, -58 )
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 1 )
@@ -71,4 +73,7 @@ margin_right = 40.0
 margin_bottom = 40.0
 
 [node name="NewPlayer" parent="." instance=ExtResource( 5 )]
-position = Vector2( 657, 420 )
+position = Vector2( 247, 420 )
+
+[node name="Turret" parent="." instance=ExtResource( 2 )]
+position = Vector2( 667, 220 )
