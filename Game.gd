@@ -1,5 +1,6 @@
 extends Node
 
+
 var score := 0
 var high_score := 0 setget change_high_score
 var player setget set_player
@@ -12,6 +13,8 @@ var random = RandomNumberGenerator.new()
 signal lost
 signal ammo_changed(new_ammo)
 signal pickup
+
+	
 
 func set_player(new_player):
 	player = new_player

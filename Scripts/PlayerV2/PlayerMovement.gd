@@ -17,14 +17,14 @@ onready var laser = player.get_node("Laser")
 onready var jump_sound = player.get_node("Audio").get_node("JumpSound")
 
 var jumps_made := 2
-var max_jumps := 2
+var max_jumps := 3
 
 func _physics_process(delta: float) -> void:
 	get_input()
 	handle_jump()
 	
-	if player.position.y > 1500 or player.position.y < -400:
-		Game.lose()
+#	if player.position.y > 1500 or player.position.y < -400:
+#		Game.lose()
 		
 	velocity.y += gravity * delta
 	velocity = player.move_and_slide(velocity, Vector2.UP)
@@ -58,11 +58,21 @@ func get_input() -> void:
 		jumps_made = 0
 	
 func handle_jump() -> void:
-	if jumps_made == 0 and not player.is_on_floor(): return 
+	var laser = player.get_node("Laser")
+#	if not player.is_on_floor(): return 
 #	if not player.is_on_floor(): return
-	if Input.is_action_just_pressed("move_up") and jumps_made < max_jumps:
+
+	var should_jump: bool = (
+		
+		Input.is_action_just_pressed("move_up") 
+		and laser.laser_ammo >= 15
+		
+	)
+	
+	
+	if  should_jump:
+		laser.laser_ammo -= 15
 		jumps_made += 1
-		print(jumps_made)
 		velocity.y = -jump_speed
 		jump_sound.play()
 

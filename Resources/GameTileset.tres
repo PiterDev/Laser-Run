@@ -1,16 +1,20 @@
-[gd_resource type="TileSet" load_steps=5 format=2]
+[gd_resource type="TileSet" load_steps=7 format=2]
 
-[ext_resource path="res://Resources/Images/Ground Tile.png" type="Texture" id=1]
-
-[sub_resource type="NavigationPolygon" id=1]
-vertices = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
-polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
+[ext_resource path="res://Resources/Images/Ground.png" type="Texture" id=1]
+[ext_resource path="res://Resources/Images/Ground Tile.png" type="Texture" id=2]
 
 [sub_resource type="OccluderPolygon2D" id=2]
 polygon = PoolVector2Array( 16, 16, 0.0133438, 15.8409, 0, 0.0133438, 16, 0 )
 
 [sub_resource type="ConvexPolygonShape2D" id=3]
 points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
+
+[sub_resource type="NavigationPolygon" id=6]
+vertices = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
+polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
+
+[sub_resource type="OccluderPolygon2D" id=5]
+polygon = PoolVector2Array( 16, 0, 0, 0, 0, 16, 16, 16 )
 
 [resource]
 0/name = "Ground Tile.png 0"
@@ -22,7 +26,6 @@ points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
 0/occluder_offset = Vector2( 0, 0 )
 0/occluder = SubResource( 2 )
 0/navigation_offset = Vector2( 0, 0 )
-0/navigation = SubResource( 1 )
 0/shape_offset = Vector2( 0, 0 )
 0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 0/shape = SubResource( 3 )
@@ -36,3 +39,19 @@ points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 0/z_index = 0
+1/name = "Ground.png 1"
+1/texture = ExtResource( 2 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 0, 0, 16, 16 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/occluder = SubResource( 5 )
+1/navigation_offset = Vector2( 0, 0 )
+1/navigation = SubResource( 6 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0

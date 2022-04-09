@@ -9,13 +9,37 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "ColorRect",
+"class": "ColorTile",
+"language": "GDScript",
+"path": "res://addons/color-palette/ColorTile.gd"
+}, {
+"base": "Container",
+"class": "FlexGridContainer",
+"language": "GDScript",
+"path": "res://addons/color-palette/utilities/FlexGridContainer.gd"
+}, {
 "base": "",
 "class": "GitAPI",
 "language": "NativeScript",
 "path": "res://addons/godot-git-plugin/git_api.gdns"
+}, {
+"base": "Reference",
+"class": "Palette",
+"language": "GDScript",
+"path": "res://addons/color-palette/Palette.gd"
+}, {
+"base": "Reference",
+"class": "PaletteImporter",
+"language": "GDScript",
+"path": "res://addons/color-palette/PaletteImporter.gd"
 } ]
 _global_script_class_icons={
-"GitAPI": ""
+"ColorTile": "",
+"FlexGridContainer": "res://addons/color-palette/utilities/FlexGridContainerIcon.png",
+"GitAPI": "",
+"Palette": "",
+"PaletteImporter": ""
 }
 
 [application]
@@ -28,6 +52,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Game="*res://Game.gd"
+Scenes="*res://SceneManager.gd"
 
 [debug]
 

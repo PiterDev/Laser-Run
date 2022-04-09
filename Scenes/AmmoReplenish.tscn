@@ -66,7 +66,8 @@ __meta__ = {
 }
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
-color = Color( 0.956863, 0.643137, 0.105882, 1 )
+scale = Vector2( 1.2, 1.2 )
+color = Color( 0.878431, 0.631373, 0.0431373, 1 )
 offset = Vector2( -3, -5 )
 polygon = PoolVector2Array( 0, 0, 0, 10, 8, 5 )
 

@@ -213,8 +213,8 @@ func _physics_process(delta: float) -> void:
 	get_input()
 	shoot_process()
 	handle_jump()
-	if position.y > 1500 or position.y < -400:
-		Game.lose()
+#	if position.y > 1500 or position.y < -400:
+#		Game.lose()
 #	handle_bounce()
 
 

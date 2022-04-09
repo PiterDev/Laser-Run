@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://Scripts/PlayerV2/PlayerMovement.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/PlayerV2/PlayerScriptUtils.gd" type="Script" id=2]
@@ -10,33 +10,135 @@
 [ext_resource path="res://Resources/Fonts/DefFont.tres" type="DynamicFont" id=8]
 [ext_resource path="res://Resources/Theme.tres" type="Theme" id=9]
 [ext_resource path="res://Resources/Sounds/jump.ogg" type="AudioStream" id=10]
+[ext_resource path="res://Scripts/LaserMeterParticles.gd" type="Script" id=11]
+[ext_resource path="res://Resources/Images/water.png" type="Texture" id=12]
+[ext_resource path="res://Scripts/Shake.gd" type="Script" id=13]
+[ext_resource path="res://Scripts/PlayerV2/GlitchMeter.gd" type="Script" id=14]
+[ext_resource path="res://Scripts/PlayerV2/FpsDisplay.gd" type="Script" id=15]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 3.0
-height = 4.0
+radius = 6.0
+height = 8.0
 
 [sub_resource type="Curve" id=2]
 max_value = 5.0
 _data = [ Vector2( 0.0188679, 0.318182 ), 0.0, 1.23017, 0, 0, Vector2( 0.268868, 0.5 ), 2.84711, 2.84711, 0, 0, Vector2( 0.990566, 0.636364 ), -3.68449, -0.856565, 0, 0 ]
 
 [sub_resource type="Gradient" id=3]
-offsets = PoolRealArray( 0, 0.585635, 1 )
-colors = PoolColorArray( 1, 0.4, 0.4, 1, 1, 0.419608, 0.333333, 1, 1, 0.639216, 0.639216, 1 )
+offsets = PoolRealArray( 0.0662983 )
+colors = PoolColorArray( 0.878431, 0.631373, 0.0431373, 1 )
 
 [sub_resource type="Curve" id=4]
 _data = [ Vector2( 0, 1 ), 0.0, -0.963636, 0, 0, Vector2( 1, 0 ), -1.26649, 0.0, 0, 0 ]
 
 [sub_resource type="Curve" id=5]
 max_value = 1.34
-_data = [ Vector2( 0.598765, 0 ), 0.0, 1.77611, 0, 0, Vector2( 1, 0.694364 ), 1.90979, 0.0, 0, 0 ]
+_data = [ Vector2( 0.65566, 0 ), 0.0, 0.611655, 0, 0, Vector2( 1, 0.414182 ), -0.922337, 0.0, 0, 0 ]
 
 [sub_resource type="Gradient" id=6]
-offsets = PoolRealArray( 0.143345, 0.948805 )
-colors = PoolColorArray( 0.0078125, 0.697693, 1, 1, 0.871094, 0.871094, 0.871094, 1 )
+offsets = PoolRealArray( 0, 0.270718, 1 )
+colors = PoolColorArray( 0.792157, 0.854902, 0.886275, 0, 0.878431, 0.631373, 0.0431373, 1, 0.878431, 0.631373, 0.0431373, 1 )
 
-[sub_resource type="ShaderMaterial" id=11]
+[sub_resource type="Curve" id=15]
+min_value = -200.0
+max_value = 200.0
+_data = [ Vector2( 0.0108696, 26.3636 ), 0.0, 0.0, 0, 0, Vector2( 0.472826, -20.9091 ), -415.921, -415.921, 0, 0, Vector2( 1, -159.091 ), -107.918, 0.0, 0, 0 ]
 
-[sub_resource type="Shader" id=13]
+[sub_resource type="CurveTexture" id=16]
+curve = SubResource( 15 )
+
+[sub_resource type="ParticlesMaterial" id=14]
+lifetime_randomness = 1.0
+emission_shape = 2
+emission_box_extents = Vector3( 0, 10, 1 )
+flag_disable_z = true
+spread = 1.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 50.0
+angular_velocity = 0.01
+angular_velocity_random = 0.2
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 5.0
+linear_accel_curve = SubResource( 16 )
+damping_random = 1.0
+scale = 0.1
+
+[sub_resource type="Animation" id=18]
+resource_name = "Flash"
+length = 0.1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Polygon2D:color")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0.878431, 0.631373, 0.0431373, 1 ), Color( 1, 1, 1, 1 ), Color( 0.878431, 0.631373, 0.0431373, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Polygon2D:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1.1, 1.1 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=19]
+resource_name = "Rotate"
+length = 6.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Polygon2D:rotation_degrees")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4, 0.5, 1.9, 2, 3.4, 3.5, 4.9, 5, 6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0, 90.0, 90.0, 180.0, 180.0, 270.0, 270.0, 360.0, 360.0 ]
+}
+
+[sub_resource type="Animation" id=20]
+resource_name = "Flash"
+length = 0.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Polygon2D:color")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.25, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0.878431, 0.631373, 0.0431373, 1 ), Color( 0.878431, 0.184314, 0.0431373, 1 ), Color( 0.878431, 0.184314, 0.0431373, 1 ), Color( 0.878431, 0.184314, 0.0431373, 1 ), Color( 0.878431, 0.631373, 0.0431373, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Polygon2D:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.25, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.9, 0.9 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Shader" id=17]
 code = "/*
 	Glitch Effect Shader by Yui Kinomoto @arlez80
 
@@ -92,73 +194,48 @@ void fragment( )
 "
 
 [sub_resource type="ShaderMaterial" id=12]
-shader = SubResource( 13 )
+render_priority = 100
+shader = SubResource( 17 )
 shader_param/shake_power = 0.03
-shader_param/shake_rate = 0.2
+shader_param/shake_rate = 1.0
 shader_param/shake_speed = 5.0
 shader_param/shake_block_size = 30.5
-shader_param/shake_color_rate = 0.01
-
-[sub_resource type="Gradient" id=7]
-offsets = PoolRealArray( 0.0236686, 0.47929, 1 )
-colors = PoolColorArray( 0.00817323, 0.00456238, 0.0507813, 1, 0.179688, 0.317261, 0.359375, 1, 0.804688, 0.804688, 0.804688, 1 )
-
-[sub_resource type="GradientTexture" id=8]
-gradient = SubResource( 7 )
-
-[sub_resource type="Environment" id=9]
-background_mode = 4
-background_color = Color( 0.270588, 0.113725, 0.113725, 1 )
-background_energy = 1.29
-ambient_light_energy = 0.0
-ssao_radius = 0.1
-glow_enabled = true
-glow_levels/1 = true
-glow_levels/2 = true
-glow_levels/4 = true
-glow_intensity = 2.17
-glow_strength = 0.82
-glow_blend_mode = 0
-glow_hdr_threshold = 0.22
-glow_hdr_luminance_cap = 4.58
-glow_hdr_scale = 1.16
-glow_bicubic_upscale = true
-glow_high_quality = true
-adjustment_enabled = true
-adjustment_brightness = 1.01
-adjustment_contrast = 1.2
-adjustment_saturation = 1.5
-adjustment_color_correction = SubResource( 8 )
+shader_param/shake_color_rate = 0.1
 
 [node name="NewPlayer" type="KinematicBody2D" groups=["Player"]]
 script = ExtResource( 3 )
 
 [node name="PlayerCam" type="Camera2D" parent="."]
-position = Vector2( 3, 5 )
+position = Vector2( 6, 10 )
 current = true
-zoom = Vector2( 0.3, 0.3 )
+zoom = Vector2( 0.4, 0.4 )
 smoothing_enabled = true
+script = ExtResource( 13 )
+
+[node name="Collisions" type="CollisionShape2D" parent="."]
+modulate = Color( 1, 0, 0, 1 )
+position = Vector2( 6, 10 )
+shape = SubResource( 1 )
 
 [node name="Rect" type="Polygon2D" parent="."]
 z_index = 1
-color = Color( 0, 0.811765, 1, 1 )
 antialiased = true
-polygon = PoolVector2Array( 6, 10, 0, 10, 0, 0, 6, 0 )
-
-[node name="Collisions" type="CollisionShape2D" parent="."]
-position = Vector2( 3, 5 )
-shape = SubResource( 1 )
+polygon = PoolVector2Array( 12, 20, 0, 20, 0, 0, 12, 0 )
 
 [node name="Timers" type="Node" parent="."]
 
 [node name="GlitchDownTimer" type="Timer" parent="Timers"]
 wait_time = 10.0
+autostart = true
 
 [node name="Laser" type="Node2D" parent="."]
 script = ExtResource( 5 )
+laser_ammo = 100.0
+laser_max_ammo = 100.0
+laser_boost_speed = 30
 
 [node name="ReloadTimer" type="Timer" parent="Laser"]
-wait_time = 5.0
+wait_time = 0.4
 one_shot = true
 
 [node name="AmmoChangeTimer" type="Timer" parent="Laser"]
@@ -168,30 +245,33 @@ autostart = true
 [node name="Lines" type="Node2D" parent="Laser"]
 
 [node name="Laser" type="Line2D" parent="Laser/Lines"]
-position = Vector2( 3, 5 )
+position = Vector2( 6, 10 )
+scale = Vector2( 0.998251, 1 )
 z_index = 1
 points = PoolVector2Array( 0, 0, 0, 0 )
-width = 8.0
+width = 14.0
 width_curve = SubResource( 2 )
-default_color = Color( 1, 0.4, 0.4, 1 )
+default_color = Color( 0, 0.666667, 1, 1 )
 gradient = SubResource( 3 )
 
 [node name="Preview" type="Line2D" parent="Laser/Lines"]
-position = Vector2( 3, 5 )
+position = Vector2( 6, 10 )
 z_index = -1
 points = PoolVector2Array( 0, 0, 0, 0 )
-width = 1.0
+width = 2.0
 width_curve = SubResource( 4 )
-default_color = Color( 1, 0.454902, 0.4, 1 )
+default_color = Color( 1, 0.54902, 0, 1 )
 
 [node name="Raycasts" type="Node2D" parent="Laser"]
 position = Vector2( 3, 5 )
 
 [node name="LaserRayCast" type="RayCast2D" parent="Laser/Raycasts"]
+position = Vector2( 3, 5 )
 enabled = true
 cast_to = Vector2( 0, 100 )
 
 [node name="PreviewRaycast" type="RayCast2D" parent="Laser/Raycasts"]
+position = Vector2( 3, 5 )
 enabled = true
 cast_to = Vector2( 0, 100 )
 
@@ -203,14 +283,17 @@ __meta__ = {
 
 [node name="Movement" type="Node" parent="Scripts"]
 script = ExtResource( 1 )
-jump_speed = 250
+speed = 350
+jump_speed = 300
+gravity = 450
 
 [node name="Trail" type="Line2D" parent="."]
 position = Vector2( 3, 5 )
 z_index = -3
 points = PoolVector2Array( 3, 5, 3, 5, 3, 5 )
+width = 20.0
 width_curve = SubResource( 5 )
-default_color = Color( 0.4, 0.501961, 1, 1 )
+default_color = Color( 0.211765, 0.737255, 1, 1 )
 gradient = SubResource( 6 )
 script = ExtResource( 4 )
 
@@ -232,24 +315,81 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -580.0
-margin_top = -328.0
+margin_left = -1920.0
+margin_top = -1080.0
 rect_pivot_offset = Vector2( -478, 412 )
 theme = ExtResource( 9 )
 
 [node name="ProgressBar" type="ProgressBar" parent="PlayerUI/Container"]
-material = SubResource( 11 )
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -150.0
-margin_top = -150.0
+margin_left = -60.0
+margin_top = -10.0
+margin_right = 470.0
+margin_bottom = 40.0
+rect_rotation = -90.0
 custom_fonts/font = ExtResource( 8 )
+max_value = 50.0
 value = 50.0
+percent_visible = false
 script = ExtResource( 7 )
 
 [node name="Tween" type="Tween" parent="PlayerUI/Container/ProgressBar"]
+
+[node name="Particles2D" type="Particles2D" parent="PlayerUI/Container/ProgressBar"]
+position = Vector2( 0, 25 )
+amount = 5
+lifetime = 5.0
+randomness = 1.0
+local_coords = false
+process_material = SubResource( 14 )
+texture = ExtResource( 12 )
+script = ExtResource( 11 )
+
+[node name="GlitchMeter" type="Control" parent="PlayerUI/Container"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -300.0
+margin_right = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource( 14 )
+
+[node name="Polygon2D" type="Polygon2D" parent="PlayerUI/Container/GlitchMeter"]
+position = Vector2( 150, 170 )
+color = Color( 0.878431, 0.631373, 0.0431373, 1 )
+offset = Vector2( -100, 75 )
+polygon = PoolVector2Array( 0, 0, 200, 0, 100, -200 )
+
+[node name="ReferenceRect" type="ReferenceRect" parent="PlayerUI/Container/GlitchMeter"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="RotateTimer" type="Timer" parent="PlayerUI/Container/GlitchMeter"]
+wait_time = 12.0
+autostart = true
+
+[node name="BeatChecker" type="Timer" parent="PlayerUI/Container/GlitchMeter"]
+wait_time = 0.1
+autostart = true
+
+[node name="Flasher" type="AnimationPlayer" parent="PlayerUI/Container/GlitchMeter"]
+anims/Flash = SubResource( 18 )
+
+[node name="Rotator" type="AnimationPlayer" parent="PlayerUI/Container/GlitchMeter"]
+anims/Rotate = SubResource( 19 )
+
+[node name="GlitchRemove" type="AnimationPlayer" parent="PlayerUI/Container/GlitchMeter"]
+anims/Flash = SubResource( 20 )
+
+[node name="Label" type="Label" parent="PlayerUI/Container"]
+margin_right = 112.0
+margin_bottom = 18.0
+custom_fonts/font = ExtResource( 8 )
+text = "FPS: 60"
+script = ExtResource( 15 )
 
 [node name="GlitchShader" type="ColorRect" parent="."]
 visible = false
@@ -258,13 +398,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -960.0
-margin_top = -540.0
-margin_right = 960.0
-margin_bottom = 540.0
+margin_left = -906.0
+margin_top = -565.0
+margin_right = 1014.0
+margin_bottom = 515.0
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 9 )
-
+[connection signal="points_removed" from="." to="PlayerUI/Container/GlitchMeter" method="_on_NewPlayer_points_removed"]
+[connection signal="timeout" from="Timers/GlitchDownTimer" to="." method="_on_GlitchDownTimer_timeout"]
 [connection signal="timeout" from="Laser/ReloadTimer" to="Laser" method="_on_ReloadTimer_timeout"]
 [connection signal="timeout" from="Laser/AmmoChangeTimer" to="Laser" method="_on_AmmoChangeTimer_timeout"]
+[connection signal="timeout" from="PlayerUI/Container/GlitchMeter/RotateTimer" to="PlayerUI/Container/GlitchMeter" method="_on_RotateTimer_timeout"]
+[connection signal="timeout" from="PlayerUI/Container/GlitchMeter/BeatChecker" to="PlayerUI/Container/GlitchMeter" method="_on_BeatChecker_timeout"]
+[connection signal="animation_finished" from="PlayerUI/Container/GlitchMeter/GlitchRemove" to="PlayerUI/Container/GlitchMeter" method="_on_GlitchRemove_animation_finished"]

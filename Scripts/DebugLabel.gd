@@ -6,7 +6,7 @@ func _process(_delta: float) -> void:
 	var player = Game.player
 
 	
-	var text_to_set := """
+	var _text_to_set := """
 	FPS: %s
 	
 	Velocity: %s

@@ -16,3 +16,4 @@ func _on_Play_pressed() -> void:
 func _on_Tween_tween_completed(_object: Object, _key: NodePath) -> void:
 	Game.glitch_transition_pos = $GlitchSound.get_playback_position()
 	get_tree().change_scene("res://Scenes/Map.tscn")
+#	Scenes.goto_scene("res://Scenes/Map.tscn")

@@ -1,13 +1,13 @@
 extends KinematicBody2D
 
 var moving := false
-signal lose
+signal wall_touched
 signal is_close
 
-var default_speed := 200.0
+var default_speed := 250.0
 
 
-var off_screen_speed := 300.0
+var off_screen_speed := 500.0
 
 var speeding_up := false 
 var slowing_down := false
@@ -87,7 +87,7 @@ func _on_MoveTimer_timeout() -> void:
 func _on_Area2D_body_entered(body: Node) -> void:
 	if not body.is_in_group("Player"):
 		return
-	Game.lose()
+	emit_signal("wall_touched")
 
 
 
