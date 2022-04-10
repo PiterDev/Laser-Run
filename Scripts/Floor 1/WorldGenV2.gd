@@ -26,7 +26,7 @@ var collectible_generate_y_max := 44
 
 var path_string := "res://Scenes/RandomTileMaps/"
 var ammo_replenish := preload("res://Scenes/AmmoReplenish.tscn")
-
+# Help i see the variables in my sleep
 
 
 var chunk_scene := preload("res://Scenes/Floor 1/WorldGenChunk.tscn")

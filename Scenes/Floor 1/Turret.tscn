@@ -24,7 +24,7 @@ polygon = PoolVector2Array( 0, 0, 6, 0, 6, 13, -1.66893e-06, 13 )
 [node name="SmallLine" type="Line2D" parent="Polygon2D/RotatingPart"]
 position = Vector2( 0, 9 )
 z_index = -1
-points = PoolVector2Array( 0, 0, 0, 0 )
+points = PoolVector2Array( 0, 0, 8, 5 )
 width = 1.0
 default_color = Color( 0.878431, 0.184314, 0.0431373, 1 )
 
@@ -49,3 +49,4 @@ shape = SubResource( 1 )
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]
+[connection signal="tween_completed" from="LineTween" to="." method="_on_LineTween_tween_completed"]

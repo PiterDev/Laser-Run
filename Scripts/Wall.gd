@@ -4,10 +4,10 @@ var moving := false
 signal wall_touched
 signal is_close
 
-var default_speed := 250.0
+var default_speed := 300.0
 
 
-var off_screen_speed := 500.0
+var off_screen_speed := 600.0
 
 var speeding_up := false 
 var slowing_down := false

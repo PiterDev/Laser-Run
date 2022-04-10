@@ -45,26 +45,29 @@ func _process(_delta: float) -> void:
 	# Reload logic
 	if is_reloading:
 		if laser_ammo == laser_max_ammo:
-			print("Reloaded")
 			is_reloading = false
 #		laser_ammo = stepify(lerp(laser_ammo, laser_max_ammo, 0.05), 0.01)
 	
 	# Shooting Logic
 	if not should_shoot: 
 		$Lines/Laser.points[1] = Vector2(0,0)
-		if not is_reloading and not reload_timer_started and player.is_on_floor(): 
+		if not is_reloading and player.is_on_floor() and not reload_timer_started: 
 			reload_timer_started = true
 			$ReloadTimer.start()
+		if reload_timer_started and not player.is_on_floor():
+			reload_timer_started = false
+			$ReloadTimer.stop()
 		laser_sound.stop()
 		is_shooting = false
+		$Lines/Preview.visible = true
 		return
 	if laser_ammo <= 0:
 		laser_ammo = 0.0
 		$Lines/Laser.points[1] = Vector2(0,0)
-		if not is_reloading and not reload_timer_started and player.is_on_floor(): 
-			reload_timer_started = true
-			$ReloadTimer.start()
-			print("Starting reload")
+#		if not is_reloading and not reload_timer_started and player.is_on_floor(): 
+#			reload_timer_started = true
+#			$ReloadTimer.start()
+#			print("Starting reload")
 		laser_sound.stop()
 		is_shooting = false
 		return
@@ -74,7 +77,7 @@ func _process(_delta: float) -> void:
 	if not laser_sound.playing:
 		laser_sound.play()
 	is_shooting = true
-	
+	$Lines/Preview.visible = false
 	$Raycasts/LaserRayCast.cast_to = get_local_mouse_position() * 100
 	var laser_collision_point: Vector2 = $Raycasts/LaserRayCast.get_collision_point()
 	var laser_local_collision_point = to_local(laser_collision_point)
@@ -102,7 +105,6 @@ func _process(_delta: float) -> void:
 func _on_ReloadTimer_timeout() -> void:
 	if not player.is_on_floor():
 		return
-	print("Reloading..." + str(player.is_on_floor()))
 	reload_timer_started = false
 	is_reloading = true
 
@@ -113,7 +115,6 @@ func _on_AmmoChangeTimer_timeout() -> void:
 	if is_shooting:
 		is_reloading = false
 		self.laser_ammo = clamp(laser_ammo - 1, 0, laser_max_ammo)
-		print("Ammo: ", str(laser_ammo))
 	elif is_reloading:
 		if not player.is_on_floor():
 			is_reloading = false

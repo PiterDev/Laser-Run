@@ -20,7 +20,7 @@ var jumps_made := 2
 var max_jumps := 3
 
 func _physics_process(delta: float) -> void:
-	get_input()
+	get_input(delta)
 	handle_jump()
 	
 #	if player.position.y > 1500 or player.position.y < -400:
@@ -30,13 +30,16 @@ func _physics_process(delta: float) -> void:
 	velocity = player.move_and_slide(velocity, Vector2.UP)
 
 
-func get_input() -> void:
+func get_input(delta: float) -> void:
 
-	var input_dir = 0
-	if Input.is_action_pressed("move_right"):
-		input_dir += 1
-	if Input.is_action_pressed("move_left"):
-		input_dir -= 1
+	var input_dir = (
+		Input.get_action_strength("move_right") -
+		Input.get_action_strength("move_left")
+	)
+#	if Input.is_action_pressed("move_right"):
+#		input_dir += 1
+#	if Input.is_action_pressed("move_left"):
+#		input_dir -= 1
 	if input_dir != 0:
 		# accelerate when there's input
 		if velocity.x > speed:
@@ -53,7 +56,10 @@ func get_input() -> void:
 		laser.should_shoot = true
 	if Input.is_action_just_released("shoot"):
 		laser.should_shoot = false
-		
+	if Input.is_action_pressed("move_down"):
+		velocity.y += 1000 * delta
+	
+	
 	if player.is_on_floor():
 		jumps_made = 0
 	
@@ -65,13 +71,13 @@ func handle_jump() -> void:
 	var should_jump: bool = (
 		
 		Input.is_action_just_pressed("move_up") 
-		and laser.laser_ammo >= 15
+		and laser.laser_ammo >= 25
 		
 	)
 	
 	
 	if  should_jump:
-		laser.laser_ammo -= 15
+		laser.laser_ammo -= 25
 		jumps_made += 1
 		velocity.y = -jump_speed
 		jump_sound.play()

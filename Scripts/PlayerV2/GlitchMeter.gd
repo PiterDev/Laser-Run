@@ -4,7 +4,7 @@ onready var player := owner
 
 var current_num := 0
 var playing_glitch := true
-
+onready var audio := player.get_node("Audio").get_node("GlitchSound")
 func _on_BeatChecker_timeout() -> void:
 	current_num += 1
 	if player.glitch_points == 0:
@@ -13,6 +13,8 @@ func _on_BeatChecker_timeout() -> void:
 	
 	if current_num % check_every == 0 and playing_glitch:
 		$Flasher.play("Flash")
+		audio.pitch_scale = 1.0 + float(player.glitch_points) / 100
+		audio.play()
 
 
 func _on_RotateTimer_timeout() -> void:

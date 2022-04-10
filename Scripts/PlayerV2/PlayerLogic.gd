@@ -19,7 +19,7 @@ func _ready() -> void:
 
 func set_laser_ammo(new_value):
 	if new_value > laser_max_ammo:
-		laser_ammo = laser_ammo
+		laser_ammo = laser_max_ammo
 	else:
 		laser_ammo = new_value
 	

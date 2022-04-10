@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://Scripts/PlayerV2/PlayerMovement.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/PlayerV2/PlayerScriptUtils.gd" type="Script" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://Scripts/Shake.gd" type="Script" id=13]
 [ext_resource path="res://Scripts/PlayerV2/GlitchMeter.gd" type="Script" id=14]
 [ext_resource path="res://Scripts/PlayerV2/FpsDisplay.gd" type="Script" id=15]
+[ext_resource path="res://Resources/Sounds/Beep.ogg" type="AudioStream" id=16]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 6.0
@@ -310,6 +311,10 @@ pitch_scale = 1.1
 stream = ExtResource( 10 )
 volume_db = -30.0
 
+[node name="GlitchSound" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource( 16 )
+volume_db = 0.05
+
 [node name="PlayerUI" type="CanvasLayer" parent="."]
 
 [node name="Container" type="Control" parent="PlayerUI"]
@@ -361,6 +366,7 @@ script = ExtResource( 14 )
 
 [node name="Polygon2D" type="Polygon2D" parent="PlayerUI/Container/GlitchMeter"]
 position = Vector2( 150, 170 )
+rotation = 6.28319
 color = Color( 0.878431, 0.631373, 0.0431373, 1 )
 offset = Vector2( -100, 75 )
 polygon = PoolVector2Array( 0, 0, 200, 0, 100, -200 )
