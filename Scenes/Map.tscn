@@ -113,7 +113,7 @@ script = ExtResource( 6 )
 visible = false
 
 [node name="Wall" parent="." instance=ExtResource( 4 )]
-position = Vector2( -161, 440 )
+position = Vector2( -334, 395 )
 z_index = 4
 
 [node name="Follow" type="Node2D" parent="Wall"]
